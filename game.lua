@@ -8,6 +8,9 @@ function game.load(width, height)
 end
 
 function game.update(dt)
+    if isGenerating then
+        grid.nextGeneration()
+    end
     grid.handleInput()
 end
 
@@ -18,6 +21,10 @@ function game.keypressed(key)
         grid.clear()
     elseif key == 'escape' then
         gameState = 'menu'
+    elseif key == 'g' then
+        isGenerating = not isGenerating
+    elseif key == 'r' then
+        grid.random()
     end
 end
 

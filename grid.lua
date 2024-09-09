@@ -16,6 +16,14 @@ function grid.init(width, height)
     end
 end
 
+function grid.random()
+    for x = 1, cellXNumber do
+        for y = 1, cellYNumber do
+            cells[x][y] = math.random() < 0.5
+        end
+    end
+end
+
 function grid.handleInput()
     local selectedX = math.floor(love.mouse.getX() / cellSize) + 1
     local selectedY = math.floor(love.mouse.getY() / cellSize) + 1

@@ -13,6 +13,7 @@
 local game = require 'game'
 local menu = require 'menu'
 local saveLoad = require 'save_load'
+local grid = require 'grid'
 
 -- globals variable
 gameState = 'game'
@@ -21,6 +22,7 @@ selectedMenu = 1
 selectedFile = 1
 width = 1080
 height = 720
+isGenerating = false
 
 function love.load()
     -- Configuration de la fenêtre
