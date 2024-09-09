@@ -1,9 +1,20 @@
--- Charger les différents modules
+--[[
+    Projet: Game of Life
+    Auteur: philzphaz
+    Date de création: 2024
+    Description: Conway Game of Life
+    Version: 1.0
+
+    note: - really bad code but it work
+          - will add more functionnalies laters
+]]
+
+-- load modules
 local game = require 'game'
 local menu = require 'menu'
 local saveLoad = require 'save_load'
 
--- Variables globales
+-- globals variable
 gameState = 'game'
 menus = {'Charger', 'Sauvegarder', 'Quitter'}
 selectedMenu = 1

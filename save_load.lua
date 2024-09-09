@@ -49,6 +49,7 @@ function saveLoad.drawLoadMenu()
         love.graphics.print('No files found', 100, 150)
     end
 
+    -- fucking bad scroll bar but it work
     scrollBarSize = 150 + #files * 50
     if scrollBarSize > height then
         filesShowed = {}
@@ -68,6 +69,7 @@ function saveLoad.drawLoadMenu()
     else
         filesShowed = files
     end
+    -- should work everytime
     for i, file in ipairs(filesShowed) do
         if (i + startIndex - 1) == selectedFile then
             love.graphics.setColor(217, 217, 217)
