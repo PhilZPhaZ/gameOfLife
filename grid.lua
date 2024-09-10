@@ -84,6 +84,13 @@ function grid.draw()
             love.graphics.rectangle("fill", (x - 1) * cellSize, (y - 1) * cellSize, cellSize - 1, cellSize - 1)
         end
     end
+
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', 10, 10, 240, 23)
+    love.graphics.setColor(217, 217, 217)
+    love.graphics.setFont(love.graphics.newFont(20))
+    love.graphics.print('Echap : Retour au menu', 10, 10)
+    love.graphics.setFont(love.graphics.newFont(40))
 end
 
 function grid.save(name)
