@@ -1,7 +1,9 @@
 local grid = require 'grid'
+local clr = require 'clearing_confirmation'
 
 local game = {}
 local gridX, gridY = 0, 0
+local isClearing = false
 
 function game.load(width, height)
     -- Initialisation de la grille et des cellules
@@ -44,7 +46,7 @@ function game.keypressed(key)
     elseif key == 'left' then
         grid.lastGeneration()
     elseif key == 'return' or key == 'backspace' then
-        grid.clear()
+        gameState = 'clearing_confirmation'
     elseif key == 'escape' then
         gameState = 'menu'
     elseif key == 'g' then

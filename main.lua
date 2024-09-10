@@ -63,6 +63,8 @@ function love.keypressed(key)
         saveLoad.saveKeypressed(key)
     elseif gameState == 'setting' then
         setting.keypressed(key)
+    elseif gameState == 'clearing_confirmation' then
+        clearing_confirmation.keypressed(key)
     end
 end
 
@@ -77,5 +79,7 @@ function love.draw()
         saveLoad.drawSaveMenu()
     elseif gameState == 'setting' then
         setting.draw()
+    elseif gameState == 'clearing_confirmation' then
+        clearing_confirmation.draw()
     end
 end
