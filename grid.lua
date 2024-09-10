@@ -65,8 +65,6 @@ function grid.nextGeneration()
     gridSave[gridSaveIndex] = cells
     gridSaveIndex = gridSaveIndex + 1
 
-    print(gridSaveIndex)
-
     cells = nextCells
 end
 
@@ -75,6 +73,8 @@ function grid.lastGeneration()
         gridSaveIndex = gridSaveIndex - 1
         cells = gridSave[gridSaveIndex]
     end
+    -- remove the last grid of the save
+    gridSave[gridSaveIndex] = nil
 end
 
 function grid.clear()
@@ -99,17 +99,23 @@ function grid.draw()
 
     -- print escape information
     love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('fill', 10, 10, 240, 23)
+    love.graphics.rectangle('fill', 10, 10, 170, 30)
     love.graphics.setColor(217, 217, 217)
-    love.graphics.setFont(love.graphics.newFont(20))
-    love.graphics.print('Echap : Retour au menu', 10, 10)
-    
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
+    love.graphics.print('Echap : Menu', 10, 10)
+
     -- print current FPS
     love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('fill', 10, 40, 85, 23)
+    love.graphics.rectangle('fill', 10, 40, 109, 30)
     love.graphics.setColor(217, 217, 217)
     love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 40)
-    love.graphics.setFont(love.graphics.newFont(40))
+
+    -- print current generation
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', 10, 70, 235, 30)
+    love.graphics.setColor(217, 217, 217)
+    love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 70)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 end
 
 function grid.save(name)

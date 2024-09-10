@@ -43,7 +43,7 @@ end
 
 function saveLoad.drawLoadMenu()
     love.graphics.setColor(217, 217, 217)
-    love.graphics.print('Select the file to open', 100, 100)
+    love.graphics.print('Sélectionner le fichier à ouvrir', 100, 100)
     files = love.filesystem.getDirectoryItems('saves')
     if #files == 0 then
         love.graphics.print('No files found', 100, 150)
@@ -81,8 +81,8 @@ function saveLoad.drawLoadMenu()
 end
 
 function saveLoad.drawSaveMenu()
-    love.graphics.print('Save Menu', 100, 100)
-    love.graphics.print('Enter the name of the save file:', 100, 150)
+    love.graphics.print('Menu de sauvegarde', 100, 100)
+    love.graphics.print('Entrer le nom du fichier de sauvegarde', 100, 150)
     love.graphics.print(saveName, 100, 200)
 end
 

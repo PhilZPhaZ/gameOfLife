@@ -23,6 +23,7 @@ selectedFile = 1
 width = 1080
 height = 720
 isGenerating = false
+isGeneratingLastGeneration = false
 
 -- global variable - grid save
 gridSave = {}
@@ -34,7 +35,7 @@ function love.load()
     love.window.setTitle("Game of Life")
     love.keyboard.setKeyRepeat(true)
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
-    love.graphics.setFont(love.graphics.newFont(40))
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
     -- Charger les cellules du jeu
     game.load(width, height)

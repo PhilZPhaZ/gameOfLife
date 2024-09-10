@@ -11,6 +11,9 @@ function game.update(dt)
     if isGenerating then
         grid.nextGeneration()
     end
+    if isGeneratingLastGeneration then
+        grid.lastGeneration()
+    end
     grid.handleInput()
 end
 
@@ -25,6 +28,8 @@ function game.keypressed(key)
         gameState = 'menu'
     elseif key == 'g' then
         isGenerating = not isGenerating
+    elseif key == 'l' then
+        isGeneratingLastGeneration = not isGeneratingLastGeneration
     elseif key == 'r' then
         grid.random()
     end
