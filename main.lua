@@ -13,11 +13,11 @@
 local game = require 'game'
 local menu = require 'menu'
 local saveLoad = require 'save_load'
-local grid = require 'grid'
+local setting = require 'settings'
 
 -- globals variable
 gameState = 'game'
-menus = {'Charger', 'Sauvegarder', 'Quitter'}
+menus = {'Charger', 'Sauvegarder', 'Paramètre', 'Quitter'}
 selectedMenu = 1
 selectedFile = 1
 width = 1080
@@ -51,6 +51,8 @@ function love.keypressed(key)
         saveLoad.loadKeypressed(key)
     elseif gameState == 'selectSave' then
         saveLoad.saveKeypressed(key)
+    elseif gameState == 'setting' then
+        setting.keypressed(key)
     end
 end
 
@@ -63,5 +65,7 @@ function love.draw()
         saveLoad.drawLoadMenu()
     elseif gameState == 'selectSave' then
         saveLoad.drawSaveMenu()
+    elseif gameState == 'setting' then
+        setting.draw()
     end
 end

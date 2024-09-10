@@ -15,7 +15,7 @@ function game.update(dt)
 end
 
 function game.keypressed(key)
-    if key == 'space' then
+    if key == 'space' or key == 'right' then
         grid.nextGeneration()
     elseif key == 'return' or key == 'backspace' then
         grid.clear()
