@@ -45,6 +45,7 @@ function menu.draw(selectedMenu, menus)
             dxXTextCord = initialTextXCoord
         end
 
+        -- maybe there are not other implementation idk
         local offset = math.sin(time + i) * 3
         love.graphics.print(menu, dxXTextCord + offset, (100 + 50 * i))
     end
