@@ -17,6 +17,8 @@ end
 function game.keypressed(key)
     if key == 'space' or key == 'right' then
         grid.nextGeneration()
+    elseif key == 'left' then
+        grid.lastGeneration()
     elseif key == 'return' or key == 'backspace' then
         grid.clear()
     elseif key == 'escape' then

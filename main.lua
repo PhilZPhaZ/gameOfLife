@@ -24,6 +24,10 @@ width = 1080
 height = 720
 isGenerating = false
 
+-- global variable - grid save
+gridSave = {}
+gridSaveIndex = 1
+
 function love.load()
     -- Configuration de la fenêtre
     love.window.setMode(width, height)

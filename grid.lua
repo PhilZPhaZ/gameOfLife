@@ -62,7 +62,19 @@ function grid.nextGeneration()
             end
         end
     end
+    gridSave[gridSaveIndex] = cells
+    gridSaveIndex = gridSaveIndex + 1
+
+    print(gridSaveIndex)
+
     cells = nextCells
+end
+
+function grid.lastGeneration()
+    if gridSaveIndex > 1 then
+        gridSaveIndex = gridSaveIndex - 1
+        cells = gridSave[gridSaveIndex]
+    end
 end
 
 function grid.clear()
