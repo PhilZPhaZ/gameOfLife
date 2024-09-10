@@ -85,6 +85,8 @@ function grid.clear()
             cells[x][y] = false
         end
     end
+    gridSave = {}
+    gridSaveIndex = 1
 end
 
 function grid.draw()

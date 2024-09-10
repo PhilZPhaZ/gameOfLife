@@ -3,7 +3,7 @@ local clr = require 'clearing_confirmation'
 
 local game = {}
 local gridX, gridY = 0, 0
-local isClearing = false
+local translate
 
 function game.load(width, height)
     -- Initialisation de la grille et des cellules
