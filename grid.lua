@@ -85,11 +85,18 @@ function grid.draw()
         end
     end
 
+    -- print escape information
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('fill', 10, 10, 240, 23)
     love.graphics.setColor(217, 217, 217)
     love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.print('Echap : Retour au menu', 10, 10)
+    
+    -- print current FPS
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', 10, 40, 85, 23)
+    love.graphics.setColor(217, 217, 217)
+    love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 40)
     love.graphics.setFont(love.graphics.newFont(40))
 end
 
