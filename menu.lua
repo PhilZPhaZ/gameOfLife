@@ -1,5 +1,13 @@
 local menu = {}
 
+local initialTextXCoord = 100
+local dxXTextCord
+local time = 0
+
+function menu.update(dt)
+    time = time + dt
+end
+
 function menu.keypressed(key)
     if key == 'escape' then
         gameState = 'game'
@@ -31,10 +39,14 @@ function menu.draw(selectedMenu, menus)
     for i, menu in ipairs(menus) do
         if i == selectedMenu then
             love.graphics.setColor(0, 0, 0)
+            dxXTextCord = initialTextXCoord + 20
         else
             love.graphics.setColor(217, 217, 217)
+            dxXTextCord = initialTextXCoord
         end
-        love.graphics.print(menu, 100, 100 + 50 * i)
+
+        local offset = math.sin(time + i) * 3
+        love.graphics.print(menu, dxXTextCord + offset, (100 + 50 * i))
     end
 end
 

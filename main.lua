@@ -45,6 +45,10 @@ end
 function love.update(dt)
     if gameState == 'game' then
         game.update(dt)
+    elseif gameState == 'menu' then
+        menu.update(dt)
+    elseif gameState == 'selectLoad' then
+        saveLoad.update(dt)
     end
 end
 

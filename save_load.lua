@@ -3,8 +3,15 @@ local cells = require 'grid'
 local saveLoad = {}
 local saveName = ""
 local files
+local initialTextXCoord = 100
+local dxXTextCord
+local time = 0
 
 startIndex = 1
+
+function saveLoad.update(dt)
+    time = time + dt
+end
 
 function saveLoad.loadKeypressed(key)
     if key == 'escape' then
@@ -74,11 +81,15 @@ function saveLoad.drawLoadMenu()
     -- if not, will not work and cause visual bugs
     for i, file in ipairs(filesShowed) do
         if (i + startIndex - 1) == selectedFile then
-            love.graphics.setColor(217, 217, 217)
-        else
             love.graphics.setColor(0, 0, 0)
+            dxXTextCord = initialTextXCoord + 20
+        else
+            love.graphics.setColor(217, 217, 217)
+            dxXTextCord = initialTextXCoord
         end
-        love.graphics.print(file, 100, 150 + i * 50)
+
+        local offset = math.sin(time + i) * 3
+        love.graphics.print(file, dxXTextCord + offset, 150 + i * 50)
     end
 end
 
