@@ -36,7 +36,7 @@ function saveLoad.saveKeypressed(key)
         cells.save(saveName)
         saveName = ""
         gameState = 'menu'
-    elseif key ~= ('lshift' or 'cmd') then
+    elseif key ~= 'lshift' then
         saveName = saveName .. key
     end
 end
@@ -50,6 +50,7 @@ function saveLoad.drawLoadMenu()
     end
 
     -- fucking bad scroll bar but it work
+    -- it's a fucking bad implementation
     scrollBarSize = 150 + #files * 50
     if scrollBarSize > height then
         filesShowed = {}
@@ -70,6 +71,7 @@ function saveLoad.drawLoadMenu()
         filesShowed = files
     end
     -- should work everytime
+    -- if not, will not work and cause visual bugs
     for i, file in ipairs(filesShowed) do
         if (i + startIndex - 1) == selectedFile then
             love.graphics.setColor(217, 217, 217)
@@ -82,8 +84,8 @@ end
 
 function saveLoad.drawSaveMenu()
     love.graphics.print('Menu de sauvegarde', 100, 100)
-    love.graphics.print('Entrer le nom du fichier de sauvegarde', 100, 150)
-    love.graphics.print(saveName, 100, 200)
+    love.graphics.print('Entrer le nom de la sauvegarde', 100, 150)
+    love.graphics.print(saveName .. '.txt', 100, 200)
 end
 
 return saveLoad

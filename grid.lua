@@ -28,10 +28,14 @@ function grid.handleInput()
     local selectedX = math.floor(love.mouse.getX() / cellSize) + 1
     local selectedY = math.floor(love.mouse.getY() / cellSize) + 1
 
-    if love.mouse.isDown(1) then
-        cells[selectedX][selectedY] = true
-    elseif love.mouse.isDown(2) then
-        cells[selectedX][selectedY] = false
+    if love.keyboard.isDown('lctrl') then
+
+    else
+        if love.mouse.isDown(1) then
+            cells[selectedX][selectedY] = true
+        elseif love.mouse.isDown(2) then
+            cells[selectedX][selectedY] = false
+        end
     end
 end
 
@@ -73,8 +77,6 @@ function grid.lastGeneration()
         gridSaveIndex = gridSaveIndex - 1
         cells = gridSave[gridSaveIndex]
     end
-    -- remove the last grid of the save
-    gridSave[gridSaveIndex] = nil
 end
 
 function grid.clear()
@@ -97,29 +99,28 @@ function grid.draw()
         end
     end
 
-    -- print escape information
+    -- Shitty code but i dont care it work
+    -- print the rectangle for the menu
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('fill', 10, 10, 170, 30)
+    love.graphics.rectangle('fill', 10, 40, 109, 30)
+    love.graphics.rectangle('fill', 10, 70, 235, 30)
+
+    -- print the text for the menu
     love.graphics.setColor(217, 217, 217)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
     love.graphics.print('Echap : Menu', 10, 10)
-
-    -- print current FPS
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('fill', 10, 40, 109, 30)
-    love.graphics.setColor(217, 217, 217)
     love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 40)
-
-    -- print current generation
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('fill', 10, 70, 235, 30)
-    love.graphics.setColor(217, 217, 217)
     love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 70)
+
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 end
 
 function grid.save(name)
     -- save in the save folder without using love
+    -- why without love ?
+    -- i dont know but it may be easier and more reliable with io
+    -- idk about that because i'm a noob lol
     local file = io.open('saves/' .. name .. '.txt', 'w')
     for y = 1, cellYNumber do
         for x = 1, cellXNumber do
@@ -136,6 +137,8 @@ end
 
 function grid.load(name)
     -- load from the save folder without using love
+    -- becaus it's not possible to use love in this file
+    -- i dont know why
     local file = io.open('saves/' .. name, 'r')
     for y = 1, cellYNumber do
         local line = file:read()

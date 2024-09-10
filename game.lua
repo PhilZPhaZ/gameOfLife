@@ -1,6 +1,7 @@
 local grid = require 'grid'
 
 local game = {}
+local gridX, gridY = 0, 0
 
 function game.load(width, height)
     -- Initialisation de la grille et des cellules
@@ -15,6 +16,26 @@ function game.update(dt)
         grid.lastGeneration()
     end
     grid.handleInput()
+end
+
+function love.mousepressed(x, y, button)
+    if button == 1 and love.keyboard.isDown('lctrl') then
+        translate = true
+    end
+end
+
+function love.mousereleased(x, y, button)
+    if button == 1 then
+        translate = false
+        gridX, gridY = 0, 0
+    end
+end
+
+function love.mousemoved(x, y, dx, dy)
+    if translate then
+        gridX = gridX + dx
+        gridY = gridY + dy
+    end
 end
 
 function game.keypressed(key)
@@ -36,6 +57,9 @@ function game.keypressed(key)
 end
 
 function game.draw()
+    if translate then
+        love.graphics.translate(gridX, gridY)
+    end
     grid.draw()
 end
 

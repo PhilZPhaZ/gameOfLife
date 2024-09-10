@@ -24,6 +24,7 @@ width = 1080
 height = 720
 isGenerating = false
 isGeneratingLastGeneration = false
+translate = false
 
 -- global variable - grid save
 gridSave = {}
