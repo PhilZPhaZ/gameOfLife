@@ -3,6 +3,8 @@ local grid = {}
 local cellSize = 20
 local cellXNumber, cellYNumber
 local cells = {}
+local gridSave = {}
+local gridSaveIndex = 1
 
 function grid.init(width, height)
     cellXNumber = math.floor(width / cellSize)
