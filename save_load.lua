@@ -91,6 +91,19 @@ function saveLoad.drawLoadMenu()
         local offset = math.sin(time + i) * 3
         love.graphics.print(file, dxXTextCord + offset, 150 + i * 50)
     end
+
+    -- create a scroll bar (graphics this time :D)
+    -- another bad code but it work
+    local scrollBarHeight = 200
+    local bottomMargin = 10
+    local thresholdSize = math.floor((height - scrollBarHeight - bottomMargin) / #files)
+    scrollBarHeight = thresholdSize * #files
+
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', 60, (height - scrollBarHeight - bottomMargin), 20, scrollBarHeight)
+
+    love.graphics.setColor(217, 217, 217)
+    love.graphics.rectangle('fill', 60, (height - scrollBarHeight - bottomMargin) + (selectedFile - 1) * thresholdSize, 20, thresholdSize)
 end
 
 function saveLoad.drawSaveMenu()
