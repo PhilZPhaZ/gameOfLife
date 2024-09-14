@@ -3,7 +3,7 @@
     Auteur: philzphaz
     Date de création: 2024
     Description: Conway Game of Life
-    Version: 1.0
+    Version: 0.0.1
 
     note: - really bad code but it work
           - will add more functionnalies laters
@@ -24,11 +24,13 @@ width = 1080
 height = 720
 isGenerating = false
 isGeneratingLastGeneration = false
-translate = false
 
--- global variable - grid save
-gridSave = {}
-gridSaveIndex = 1
+-- GRID
+GRID = {}
+cellSize = 20
+translate = false
+gridX, gridY = 0, 0
+
 
 function love.load()
     -- Configuration de la fenêtre

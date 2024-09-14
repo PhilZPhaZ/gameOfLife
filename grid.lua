@@ -1,110 +1,168 @@
 local grid = {}
-
 local cellSize = 20
 local cellXNumber, cellYNumber
 local cells = {}
-local gridSave = {}
-local gridSaveIndex = 1
+local gridX, gridY = 0, 0
 
 function grid.init(width, height)
-    cellXNumber = math.floor(width / cellSize)
-    cellYNumber = math.floor(height / cellSize)
-    
-    for x = 1, cellXNumber do
-        cells[x] = {}
-        for y = 1, cellYNumber do
-            cells[x][y] = false
-        end
-    end
+
 end
 
-function grid.random()
-    for x = 1, cellXNumber do
-        for y = 1, cellYNumber do
-            cells[x][y] = math.random() < 0.5
-        end
+function grid.wheelmoved(x, y)
+    if cellSize + y > 2 then
+        cellSize = cellSize + y
     end
 end
 
 function grid.handleInput()
-    local selectedX = math.floor(love.mouse.getX() / cellSize) + 1
-    local selectedY = math.floor(love.mouse.getY() / cellSize) + 1
+    if love.mouse.isDown(1) and not love.keyboard.isDown('lctrl') then
+        -- Calculer la cellule cliquée
+        local x = love.mouse.getX()
+        local y = love.mouse.getY()
 
-    if love.keyboard.isDown('lctrl') then
+        local cellX = math.floor((x - gridX) / cellSize)
+        local cellY = math.floor((y - gridY) / cellSize)
 
-    else
-        if love.mouse.isDown(1) then
-            cells[selectedX][selectedY] = true
-        elseif love.mouse.isDown(2) then
-            cells[selectedX][selectedY] = false
+        -- Changer la couleur de la cellule cliquée
+        if not GRID[cellX] then
+            GRID[cellX] = {}
         end
+            
+        GRID[cellX][cellY] = true
+    elseif love.mouse.isDown(2) then
+        -- Calculer la cellule cliquée
+        local x = love.mouse.getX()
+        local y = love.mouse.getY()
+
+        local cellX = math.floor((x - gridX) / cellSize)
+        local cellY = math.floor((y - gridY) / cellSize)
+
+        -- Changer la couleur de la cellule cliquée
+        if not GRID[cellX] then
+            GRID[cellX] = {}
+        end
+            
+        GRID[cellX][cellY] = false
     end
 end
 
 function grid.nextGeneration()
-    local nextCells = {}
-    for x = 1, cellXNumber do
-        nextCells[x] = {}
-        for y = 1, cellYNumber do
+    local cellToCheckWithAlgorithm = {}
+    for x, elem in next, GRID do
+        for y, cell in next, elem do
+            for dx = -1, 1 do
+                for dy = -1, 1 do
+                    if not cellToCheckWithAlgorithm[x + dx] then
+                        cellToCheckWithAlgorithm[x + dx] = {}
+                    end
+
+                    if cellToCheckWithAlgorithm[x + dx] and cellToCheckWithAlgorithm[x + dx][y + dy] then
+                        cellToCheckWithAlgorithm[x + dx][y + dy] = true
+                    elseif GRID[x + dx] and GRID[x + dx][y + dy] then
+                        cellToCheckWithAlgorithm[x + dx][y + dy] = GRID[x + dx][y + dy]
+                    else
+                        cellToCheckWithAlgorithm[x + dx][y + dy] = false
+                    end
+                end
+            end
+        end
+    end
+
+    for x, elem in next, cellToCheckWithAlgorithm do
+        for y, cell in next, elem do
             local count = 0
             for dx = -1, 1 do
                 for dy = -1, 1 do
-                    if dx ~= 0 or dy ~= 0 then
-                        local nx = x + dx
-                        local ny = y + dy
-                        if nx >= 1 and nx <= #cells and ny >= 1 and ny <= #cells[1] then
-                            if cells[nx][ny] then
-                                count = count + 1
-                            end
-                        end
+                    if cellToCheckWithAlgorithm[x + dx] and cellToCheckWithAlgorithm[x + dx][y + dy] then
+                        count = count + 1
                     end
                 end
             end
 
-            if cells[x][y] then
-                nextCells[x][y] = count == 2 or count == 3
-            else
-                nextCells[x][y] = count == 3
+            if cellToCheckWithAlgorithm[x][y] then
+                count = count - 1
+            end
+
+            if count == 3 then
+                if not GRID[x] then
+                    GRID[x] = {}
+                end
+                GRID[x][y] = true
+            elseif count < 2 or count > 3 then
+                if not GRID[x] then
+                    GRID[x] = {}
+                end
+                GRID[x][y] = false
             end
         end
     end
-    gridSave[gridSaveIndex] = cells
-    gridSaveIndex = gridSaveIndex + 1
 
-    cells = nextCells
-end
-
-function grid.lastGeneration()
-    if gridSaveIndex > 1 then
-        gridSaveIndex = gridSaveIndex - 1
-        cells = gridSave[gridSaveIndex]
-    end
-end
-
-function grid.clear()
-    for x = 1, cellXNumber do
-        for y = 1, cellYNumber do
-            cells[x][y] = false
+    -- remove all false cell in grid
+    for x, elem in next, GRID do
+        for y, cell in next, elem do
+            if not cell then
+                GRID[x][y] = nil
+            end
+        end
+        if next(GRID[x]) == nil then
+            GRID[x] = nil
         end
     end
-    gridSave = {}
-    gridSaveIndex = 1
+end
+
+function love.mousepressed(x, y, button)
+    if gameState == 'game' then
+        if button == 1 and love.keyboard.isDown('lctrl') then -- Bouton gauche de la souris
+            translate = true
+        end
+    end
+end
+
+function love.mousereleased(x, y, button)
+    if gameState == 'game' then
+        if button == 1 then
+            translate = false
+        end
+    end
+end
+
+function love.wheelmoved(x, y)
+    if gameState == 'game' then
+        grid.wheelmoved(x, y)
+    end
+end
+
+function love.mousemoved(x, y, dx, dy)
+    if gameState == 'game' then
+        if translate then
+            gridX = gridX + dx
+            gridY = gridY + dy
+        end
+    end
 end
 
 function grid.draw()
-    for x = 1, cellXNumber do
-        for y = 1, cellYNumber do
-            if cells[x][y] then
+    -- Calculer les limites de la grille visible
+    local startX = math.floor(-gridX / cellSize)
+    local startY = math.floor(-gridY / cellSize)
+    local endX = math.ceil((love.graphics.getWidth() - gridX) / cellSize)
+    local endY = math.ceil((love.graphics.getHeight() - gridY) / cellSize)
+
+    -- Dessiner les cellules
+    for x = startX, endX do
+        for y = startY, endY do
+            if GRID[x] and GRID[x][y] then
                 love.graphics.setColor(0, 0, 0)
             else
-                love.graphics.setColor(217, 217, 217)
+                love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
             end
-            love.graphics.rectangle("fill", (x - 1) * cellSize, (y - 1) * cellSize, cellSize - 1, cellSize - 1)
+            love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize, cellSize)
+            love.graphics.setColor(0.5, 0.5, 0.5)
+            love.graphics.rectangle("line", x * cellSize + gridX, y * cellSize + gridY, cellSize, cellSize)
         end
     end
 
-    -- Shitty code but i dont care it work
-    -- print the rectangle for the menu
+
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('fill', 10, 10, 170, 30)
     love.graphics.rectangle('fill', 10, 40, 109, 30)
@@ -115,42 +173,29 @@ function grid.draw()
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
     love.graphics.print('Echap : Menu', 10, 10)
     love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 40)
-    love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 70)
+    love.graphics.print('Génération : ', 10, 70)
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 end
 
-function grid.save(name)
-    -- save in the save folder without using love
-    -- why without love ?
-    -- i dont know but it may be easier and more reliable with io
-    -- idk about that because i'm a noob lol
-    local file = io.open('saves/' .. name .. '.txt', 'w')
-    for y = 1, cellYNumber do
-        for x = 1, cellXNumber do
-            if cells[x][y] then
-                file:write('1')
+function grid.random()
+    -- for all the visible cell
+    for x = math.floor(-gridX / cellSize), math.ceil((love.graphics.getWidth() - gridX) / cellSize) do
+        for y = math.floor(-gridY / cellSize), math.ceil((love.graphics.getHeight() - gridY) / cellSize) do
+            if not GRID[x] then
+                GRID[x] = {}
+            end
+            if math.random(0, 1) == 1 then
+                GRID[x][y] = true
             else
-                file:write('0')
+                GRID[x][y] = nil
             end
         end
-        file:write('\n')
     end
-    file:close()
 end
 
-function grid.load(name)
-    -- load from the save folder without using love
-    -- becaus it's not possible to use love in this file
-    -- i dont know why
-    local file = io.open('saves/' .. name, 'r')
-    for y = 1, cellYNumber do
-        local line = file:read()
-        for x = 1, cellXNumber do
-            cells[x][y] = line:sub(x, x) == '1'
-        end
-    end
-    file:close()
+function grid.clear()
+    GRID = {}
 end
 
 return grid

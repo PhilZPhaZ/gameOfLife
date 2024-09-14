@@ -2,12 +2,12 @@ local grid = require 'grid'
 local clr = require 'clearing_confirmation'
 
 local game = {}
-local gridX, gridY = 0, 0
-local translate
+
+-- Grid variable
+
 
 function game.load(width, height)
-    -- Initialisation de la grille et des cellules
-    grid.init(width, height)
+
 end
 
 function game.update(dt)
@@ -15,36 +15,14 @@ function game.update(dt)
         grid.nextGeneration()
     end
     if isGeneratingLastGeneration then
-        grid.lastGeneration()
+
     end
     grid.handleInput()
-end
-
-function love.mousepressed(x, y, button)
-    if button == 1 and love.keyboard.isDown('lctrl') then
-        translate = true
-    end
-end
-
-function love.mousereleased(x, y, button)
-    if button == 1 then
-        translate = false
-        gridX, gridY = 0, 0
-    end
-end
-
-function love.mousemoved(x, y, dx, dy)
-    if translate then
-        gridX = gridX + dx
-        gridY = gridY + dy
-    end
 end
 
 function game.keypressed(key)
     if key == 'space' or key == 'right' then
         grid.nextGeneration()
-    elseif key == 'left' then
-        grid.lastGeneration()
     elseif key == 'return' or key == 'backspace' then
         gameState = 'clearing_confirmation'
     elseif key == 'escape' then
@@ -58,10 +36,10 @@ function game.keypressed(key)
     end
 end
 
+--[[
+will have to completely rework this function and the game's core
+]]
 function game.draw()
-    if translate then
-        love.graphics.translate(gridX, gridY)
-    end
     grid.draw()
 end
 
