@@ -3,6 +3,8 @@ local cellSize = 20
 local cellXNumber, cellYNumber
 local cells = {}
 local gridX, gridY = 0, 0
+local gridSave = {}
+local gridSaveIndex = 1
 
 function grid.init(width, height)
 
@@ -27,7 +29,7 @@ function grid.handleInput()
         if not GRID[cellX] then
             GRID[cellX] = {}
         end
-            
+
         GRID[cellX][cellY] = true
     elseif love.mouse.isDown(2) then
         -- Calculer la cellule cliquée
@@ -98,6 +100,10 @@ function grid.nextGeneration()
     end
 
     -- remove all false cell in grid
+    grid.removeFalseCell()
+end
+
+function grid.removeFalseCell()
     for x, elem in next, GRID do
         for y, cell in next, elem do
             if not cell then
@@ -156,9 +162,7 @@ function grid.draw()
             else
                 love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
             end
-            love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize, cellSize)
-            love.graphics.setColor(0.5, 0.5, 0.5)
-            love.graphics.rectangle("line", x * cellSize + gridX, y * cellSize + gridY, cellSize, cellSize)
+            love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize - 1, cellSize - 1)
         end
     end
 
@@ -166,14 +170,19 @@ function grid.draw()
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('fill', 10, 10, 170, 30)
     love.graphics.rectangle('fill', 10, 40, 109, 30)
-    love.graphics.rectangle('fill', 10, 70, 235, 30)
+
+    -- size of the text generation
+    local textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex)
+    love.graphics.rectangle('fill', 10, 70, (textGenerationNumberSize / 2) + 3, 30)
 
     -- print the text for the menu
     love.graphics.setColor(217, 217, 217)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
     love.graphics.print('Echap : Menu', 10, 10)
     love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 40)
-    love.graphics.print('Génération : ', 10, 70)
+
+
+    love.graphics.print('Génération : ' .. gridSaveIndex, 10, 70)
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 end
@@ -196,6 +205,31 @@ end
 
 function grid.clear()
     GRID = {}
+end
+
+function grid.saveToFile(saveName)
+    grid.removeFalseCell()
+    local file = io.open('saves/' .. saveName .. '.txt', 'w')
+    for x, elem in next, GRID do
+        for y, cell in next, elem do
+            file:write(x .. ' ' .. y .. ' ' .. tostring(cell) .. '\n')
+        end
+    end
+    file:close()
+end
+
+function grid.loadFromFile(saveName)
+    GRID = {}
+    local file = io.open('saves/' .. saveName, 'r')
+    for line in file:lines() do
+        local x, y, cell = line:match('(%d+) (%d+) (%a+)')
+        if not GRID[tonumber(x)] then
+            GRID[tonumber(x)] = {}
+        end
+        GRID[tonumber(x)][tonumber(y)] = cell == 'true'
+    end
+    file:close()
+    grid.removeFalseCell()
 end
 
 return grid

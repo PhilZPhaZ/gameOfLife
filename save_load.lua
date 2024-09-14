@@ -28,7 +28,7 @@ function saveLoad.loadKeypressed(key)
         end
     elseif key == 'return' then
         -- load the selected file
-        cells.load(files[selectedFile])
+        cells.loadFromFile(files[selectedFile])
         gameState = 'game'
     end
 end
@@ -40,7 +40,7 @@ function saveLoad.saveKeypressed(key)
         saveName = saveName:sub(1, -2)
     elseif key == 'return' then
         -- save the current state of the grid in a file
-        cells.save(saveName)
+        cells.saveToFile(saveName)
         saveName = ""
         gameState = 'menu'
     elseif key ~= 'lshift' then

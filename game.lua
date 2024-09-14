@@ -3,8 +3,6 @@ local clr = require 'clearing_confirmation'
 
 local game = {}
 
--- Grid variable
-
 
 function game.load(width, height)
 
