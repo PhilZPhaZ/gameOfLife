@@ -34,7 +34,7 @@ gridX, gridY = 0, 0
 
 function love.load()
     -- Configuration de la fenêtre
-    love.window.setMode(width, height)
+    love.window.setMode(width, height, {resizable = true})
     love.window.setTitle("Game of Life")
     love.keyboard.setKeyRepeat(true)
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)

@@ -232,4 +232,15 @@ function grid.loadFromFile(saveName)
     grid.removeFalseCell()
 end
 
+function grid.fill()
+    for x = math.floor(-gridX / cellSize), math.ceil((love.graphics.getWidth() - gridX) / cellSize) do
+        for y = math.floor(-gridY / cellSize), math.ceil((love.graphics.getHeight() - gridY) / cellSize) do
+            if not GRID[x] then
+                GRID[x] = {}
+            end
+            GRID[x][y] = true
+        end
+    end
+end
+
 return grid

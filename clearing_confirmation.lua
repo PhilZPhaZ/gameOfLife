@@ -34,8 +34,8 @@ function clearing_confirmation.draw()
     local rectangleWidth = 300
     local rectangleHeight = 90
 
-    local mh = (width - rectangleWidth) / 2
-    local mv = (height - rectangleHeight) / 2
+    local mh = (love.graphics.getWidth() - rectangleWidth) / 2
+    local mv = (love.graphics.getHeight() - rectangleHeight) / 2
 
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('fill', mh, mv, rectangleWidth, rectangleHeight)

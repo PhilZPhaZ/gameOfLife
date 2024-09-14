@@ -31,6 +31,8 @@ function game.keypressed(key)
         isGeneratingLastGeneration = not isGeneratingLastGeneration
     elseif key == 'r' then
         grid.random()
+    elseif key == 'f' then
+        grid.fill()
     end
 end
 
