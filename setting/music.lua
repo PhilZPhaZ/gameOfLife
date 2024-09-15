@@ -1,7 +1,7 @@
 local musicSetting = {}
 
 local soundVolume = 1
-local musicSettingMenu = {'Activer / Desactiver', 'Volume : ' .. (soundVolume * 100), 'Retour'}
+local musicSettingMenu = {'Desactiver la musique', 'Volume : ' .. (soundVolume * 100), 'Retour'}
 local time = 0
 local selectedMenuMusic = 1
 local initialTextXCoord = 100
@@ -25,6 +25,7 @@ function musicSetting.keypressed(key)
     elseif key == 'return' then
         if selectedMenuMusic == 1 then
             isPlaying = not isPlaying
+            musicSettingMenu[1] = isPlaying and 'Desactiver la musique' or 'Activer la musique'
         elseif selectedMenuMusic == 2 then
             if soundVolume == 0 then
                 soundVolume = 1
@@ -41,14 +42,14 @@ function musicSetting.keypressed(key)
         elseif selectedMenuMusic == 3 then
             gameState = 'setting'
         end
-    elseif key == 'right' and selectedMenuMusic then
+    elseif key == 'right' and selectedMenuMusic == 2 then
         soundVolume = soundVolume + soundVolumeChanging
         if soundVolume > 1 then
             soundVolume = 1
         end
         musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
         source:setVolume(soundVolume)
-    elseif key == 'left' and selectedMenuMusic then
+    elseif key == 'left' and selectedMenuMusic == 2 then
         soundVolume = soundVolume - soundVolumeChanging
         if soundVolume < soundVolumeChanging then
             soundVolume = 0
@@ -72,8 +73,10 @@ function musicSetting.update(dt)
 end
 
 function musicSetting.draw()
-    love.graphics.setColor(217, 217, 217)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
     love.graphics.print('Musique', 100, 100)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
     for i, menu in ipairs(musicSettingMenu) do
         if i == selectedMenuMusic then
