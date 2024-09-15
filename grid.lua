@@ -167,17 +167,29 @@ function grid.draw()
     local endY = math.ceil((love.graphics.getHeight() - gridY) / cellSize)
 
     -- Dessiner les cellules
-    for x = startX, endX do
-        for y = startY, endY do
-            if GRID[x] and GRID[x][y] then
-                love.graphics.setColor(0, 0, 0)
-            else
-                love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
+    if cellSize > 3 then
+        for x = startX, endX do
+            for y = startY, endY do
+                if GRID[x] and GRID[x][y] then
+                    love.graphics.setColor(0, 0, 0)
+                else
+                    love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
+                end
+                love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize - 1, cellSize - 1)
             end
-            love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize - 1, cellSize - 1)
+        end
+    else
+        for x = startX, endX do
+            for y = startY, endY do
+                if GRID[x] and GRID[x][y] then
+                    love.graphics.setColor(0, 0, 0)
+                else
+                    love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
+                end
+                love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize, cellSize)
+            end
         end
     end
-
 
     love.graphics.setColor(0, 0, 0)
     -- rectangle for menu
@@ -248,8 +260,6 @@ function grid.saveToFile(saveName)
 end
 
 function grid.loadFromFile(saveName)
-    grid.clear()
-
     local saveData = love.filesystem.read('saves/' .. saveName)
 
     for line in saveData:gmatch('[^\n]+') do
