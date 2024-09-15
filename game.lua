@@ -39,11 +39,8 @@ function game.keypressed(key)
     end
 end
 
---[[
-will have to completely rework this function and the game's core
-]]
 function game.draw()
-    grid.draw()
+    grid.draw(true)
 end
 
 return game

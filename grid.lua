@@ -159,7 +159,7 @@ function love.mousemoved(x, y, dx, dy)
     end
 end
 
-function grid.draw()
+function grid.draw(withInfos)
     -- Calculer les limites de la grille visible
     local startX = math.floor(-gridX / cellSize)
     local startY = math.floor(-gridY / cellSize)
@@ -191,38 +191,40 @@ function grid.draw()
         end
     end
 
-    love.graphics.setColor(0, 0, 0)
-    -- rectangle for menu
-    local textMenuSize = love.graphics.getFont():getWidth('Echap : Menu')
-    love.graphics.rectangle('fill', 10, 10, (textMenuSize / 2) + 3, 30)
+    if withInfos then
+        love.graphics.setColor(0, 0, 0)
+        -- rectangle for menu
+        local textMenuSize = love.graphics.getFont():getWidth('Echap : Menu')
+        love.graphics.rectangle('fill', 10, 10, (textMenuSize / 2) + 3, 30)
 
-    -- rectangle for help
-    local textHelpSize = love.graphics.getFont():getWidth('Aide : h')
-    love.graphics.rectangle('fill', 10, 40, (textHelpSize / 2) + 3, 30)
+        -- rectangle for help
+        local textHelpSize = love.graphics.getFont():getWidth('Aide : h')
+        love.graphics.rectangle('fill', 10, 40, (textHelpSize / 2) + 3, 30)
 
-    -- rectangle for fps
-    local textFPSSize = love.graphics.getFont():getWidth('FPS : ' .. love.timer.getFPS())
-    love.graphics.rectangle('fill', 10, 70, (textFPSSize / 2) + 3, 30)
+        -- rectangle for fps
+        local textFPSSize = love.graphics.getFont():getWidth('FPS : ' .. love.timer.getFPS())
+        love.graphics.rectangle('fill', 10, 70, (textFPSSize / 2) + 3, 30)
 
-    -- size of the text generation
-    local textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex)
-    love.graphics.rectangle('fill', 10, 100, (textGenerationNumberSize / 2) + 3, 30)
+        -- size of the text generation
+        local textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex)
+        love.graphics.rectangle('fill', 10, 100, (textGenerationNumberSize / 2) + 3, 30)
 
-    -- print the text for the menu
-    love.graphics.setColor(217, 217, 217)
-    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
-    love.graphics.print('Echap : Menu', 10, 10)
+        -- print the text for the menu
+        love.graphics.setColor(217, 217, 217)
+        love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
+        love.graphics.print('Echap : Menu', 10, 10)
 
-    -- print the text for the help
-    love.graphics.print('Aide : h', 10, 40)
+        -- print the text for the help
+        love.graphics.print('Aide : h', 10, 40)
 
-    -- print the text for the fps
-    love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 70)
+        -- print the text for the fps
+        love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 70)
 
-    -- print the text for the generation
-    love.graphics.print('Génération : ' .. gridSaveIndex, 10, 100)
+        -- print the text for the generation
+        love.graphics.print('Génération : ' .. gridSaveIndex, 10, 100)
 
-    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
+        love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
+    end
 end
 
 function grid.random()

@@ -29,7 +29,7 @@ function clearing_confirmation.keypressed(key)
 end
 
 function clearing_confirmation.draw()
-    grid.draw()
+    grid.draw(true)
 
     local rectangleWidth = 300
     local rectangleHeight = 90
