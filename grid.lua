@@ -209,26 +209,31 @@ end
 
 function grid.saveToFile(saveName)
     grid.removeFalseCell()
-    local file = io.open('saves/' .. saveName .. '.txt', 'w')
+
+    local saveData = {}
     for x, elem in next, GRID do
         for y, cell in next, elem do
-            file:write(x .. ' ' .. y .. ' ' .. tostring(cell) .. '\n')
+            table.insert(saveData, x .. ';' .. y .. ';' .. tostring(cell))
         end
     end
-    file:close()
+
+    love.filesystem.createDirectory('saves')
+    love.filesystem.write('saves/' .. saveName, table.concat(saveData, '\n'))
 end
 
 function grid.loadFromFile(saveName)
-    GRID = {}
-    local file = io.open('saves/' .. saveName, 'r')
-    for line in file:lines() do
-        local x, y, cell = line:match('(%d+) (%d+) (%a+)')
+    grid.clear()
+
+    local saveData = love.filesystem.read('saves/' .. saveName)
+
+    for line in saveData:gmatch('[^\n]+') do
+        local x, y, cell = line:match('(%d+);(%d+);(%a+)')
         if not GRID[tonumber(x)] then
             GRID[tonumber(x)] = {}
         end
         GRID[tonumber(x)][tonumber(y)] = cell == 'true'
     end
-    file:close()
+
     grid.removeFalseCell()
 end
 

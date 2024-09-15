@@ -52,6 +52,8 @@ function saveLoad.saveKeypressed(key)
 end
 
 function saveLoad.drawLoadMenu()
+    love.filesystem.remove('saves/.DS_Store')
+
     love.graphics.setColor(217, 217, 217)
     love.graphics.print('Sélectionner le fichier à ouvrir', 100, 100)
     files = love.filesystem.getDirectoryItems('saves')
