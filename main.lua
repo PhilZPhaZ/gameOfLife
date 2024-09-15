@@ -3,7 +3,7 @@
     Auteur: philzphaz
     Date de création: 2024
     Description: Conway Game of Life
-    Version: 0.0.1
+    Version: 0.1.0
 
     note: - really bad code but it work
           - will add more functionnalies laters

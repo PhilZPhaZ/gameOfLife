@@ -5,14 +5,26 @@ local cells = {}
 local gridX, gridY = 0, 0
 local gridSave = {}
 local gridSaveIndex = 1
+local zoomFactor = 1.1
 
 function grid.init(width, height)
 
 end
 
 function grid.wheelmoved(x, y)
-    if cellSize + y > 2 then
-        cellSize = cellSize + y
+    if y ~= 0 then
+        -- Obtenir la position de la souris
+        local mouseX, mouseY = love.mouse.getPosition()
+
+        -- Calculer le facteur de zoom
+        local zoom = (y > 0) and zoomFactor or (1 / zoomFactor)
+
+        -- Ajuster les coordonnées de la grille
+        gridX = mouseX - (mouseX - gridX) * zoom
+        gridY = mouseY - (mouseY - gridY) * zoom
+
+        -- Appliquer le zoom
+        cellSize = cellSize * zoom
     end
 end
 
