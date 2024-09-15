@@ -8,7 +8,7 @@ local helpingList = {
     'f: Remplir la grille',
     'espace: Générer la prochaine génération',
     'return: Effacer la grille',
-    'escape: Retourner au menu',
+    'escape: Retourner au jeu',
     'Clic gauche: Déplacer la grille',
     'Molette: Zoomer/Dézoomer',
     'Clic gauche: Remplir la cellule',
