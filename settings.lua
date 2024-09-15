@@ -41,15 +41,17 @@ function settings.update(dt)
 end
 
 function settings.draw()
-    love.graphics.setColor(217, 217, 217)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
+    love.graphics.setColor(1, 1, 1)
     love.graphics.print('Paramètre', 100, 100)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
     for i, menu in ipairs(settingsMenu) do
         if i == selectedMenu then
             love.graphics.setColor(0, 0, 0)
             dxXTextCord = initialTextXCoord + 20
         else
-            love.graphics.setColor(217, 217, 217)
+            love.graphics.setColor(1, 1, 1)
             dxXTextCord = initialTextXCoord
         end
 

@@ -15,6 +15,7 @@ local menu = require 'menu'
 local saveLoad = require 'save_load'
 local setting = require 'settings'
 local musicSetting = require 'setting.music'
+local help = require 'help'
 
 -- globals variable
 gameState = 'game'
@@ -38,7 +39,7 @@ soundVolume = 1
 
 function love.load()
     -- Configuration de la fenêtre
-    love.window.setMode(width, height, {resizable = true})
+    love.window.setMode(width, height, {resizable = true, minwidth = 1080, minheight = 720})
     love.window.setTitle("Game of Life")
     love.keyboard.setKeyRepeat(true)
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
@@ -59,6 +60,8 @@ function love.update(dt)
         setting.update(dt)
     elseif gameState == 'musicSetting' then
         musicSetting.update(dt)
+    elseif gameState == 'help' then
+        help.update(dt)
     end
 
     if isPlaying then
@@ -85,6 +88,8 @@ function love.keypressed(key)
         clearing_confirmation.keypressed(key)
     elseif gameState == 'musicSetting' then
         musicSetting.keypressed(key)
+    elseif gameState == 'help' then
+        help.keypressed(key)
     end
 end
 
@@ -103,5 +108,7 @@ function love.draw()
         clearing_confirmation.draw()
     elseif gameState == 'musicSetting' then
         musicSetting.draw()
+    elseif gameState == 'help' then
+        help.draw()
     end
 end

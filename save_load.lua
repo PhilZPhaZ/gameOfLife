@@ -54,8 +54,10 @@ end
 function saveLoad.drawLoadMenu()
     love.filesystem.remove('saves/.DS_Store')
 
-    love.graphics.setColor(217, 217, 217)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
     love.graphics.print('Sélectionner le fichier à ouvrir', 100, 100)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
+
     files = love.filesystem.getDirectoryItems('saves')
     if #files == 0 then
         love.graphics.print('No files found', 100, 150)
@@ -107,14 +109,18 @@ function saveLoad.drawLoadMenu()
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('fill', 60, (height - scrollBarHeight - bottomMargin), 20, scrollBarHeight)
 
-    love.graphics.setColor(217, 217, 217)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle('fill', 60, (height - scrollBarHeight - bottomMargin) + (selectedFile - 1) * thresholdSize, 20, thresholdSize)
 end
 
 function saveLoad.drawSaveMenu()
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
     love.graphics.print('Menu de sauvegarde', 100, 100)
-    love.graphics.print('Entrer le nom de la sauvegarde', 100, 150)
-    love.graphics.print(saveName .. '.txt', 100, 200)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
+
+    love.graphics.print('Entrer le nom de la sauvegarde', 100, 180)
+    love.graphics.print(saveName, 100, 250)
+    love.graphics.print('_', 100 + love.graphics.getFont():getWidth(saveName), 250)
 end
 
 return saveLoad

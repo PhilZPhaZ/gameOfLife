@@ -26,6 +26,8 @@ function game.keypressed(key)
         gameState = 'clearing_confirmation'
     elseif key == 'escape' then
         gameState = 'menu'
+    elseif key == 'h' then
+        gameState = 'help'
     elseif key == 'g' then
         isGenerating = not isGenerating
     elseif key == 'l' then
