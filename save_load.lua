@@ -11,6 +11,9 @@ startIndex = 1
 
 function saveLoad.update(dt)
     time = time + dt
+    if time > 6.28 then
+        time = 0
+    end
 end
 
 function saveLoad.loadKeypressed(key)

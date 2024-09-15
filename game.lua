@@ -2,7 +2,7 @@ local grid = require 'grid'
 local clr = require 'clearing_confirmation'
 
 local game = {}
-
+local source
 
 function game.load(width, height)
 
@@ -15,6 +15,7 @@ function game.update(dt)
     if isGeneratingLastGeneration then
 
     end
+
     grid.handleInput()
 end
 

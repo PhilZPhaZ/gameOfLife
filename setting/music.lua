@@ -1,0 +1,92 @@
+local musicSetting = {}
+
+local soundVolume = 1
+local musicSettingMenu = {'Activer / Desactiver', 'Volume : ' .. (soundVolume * 100), 'Retour'}
+local time = 0
+local selectedMenuMusic = 1
+local initialTextXCoord = 100
+local dxXTextCord
+local isChangingVolume = false
+local soundVolumeChanging = 0.1
+
+function musicSetting.keypressed(key)
+    if key == 'escape' then
+        gameState = 'setting'
+    elseif key == 'up' then
+        selectedMenuMusic = selectedMenuMusic - 1
+        if selectedMenuMusic < 1 then
+            selectedMenuMusic = #musicSettingMenu
+        end
+    elseif key == 'down' then
+        selectedMenuMusic = selectedMenuMusic + 1
+        if selectedMenuMusic > #musicSettingMenu then
+            selectedMenuMusic = 1
+        end
+    elseif key == 'return' then
+        if selectedMenuMusic == 1 then
+            isPlaying = not isPlaying
+        elseif selectedMenuMusic == 2 then
+            if soundVolume == 0 then
+                soundVolume = 1
+            else
+                soundVolume = soundVolume - soundVolumeChanging
+
+                if soundVolume < soundVolumeChanging then
+                    soundVolume = 0
+                end
+            end
+
+            musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
+            source:setVolume(soundVolume)
+        elseif selectedMenuMusic == 3 then
+            gameState = 'setting'
+        end
+    elseif key == 'right' and selectedMenuMusic then
+        soundVolume = soundVolume + soundVolumeChanging
+        if soundVolume > 1 then
+            soundVolume = 1
+        end
+        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
+        source:setVolume(soundVolume)
+    elseif key == 'left' and selectedMenuMusic then
+        soundVolume = soundVolume - soundVolumeChanging
+        if soundVolume < soundVolumeChanging then
+            soundVolume = 0
+        end
+        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
+        source:setVolume(soundVolume)
+    end
+end
+
+function musicSetting.update(dt)
+    time = time + dt
+    if time > 6.28 then
+        time = 0
+    end
+
+    if selectedMenuMusic == 2 then
+        isChangingVolume = true
+    else
+        isChangingVolume = false
+    end
+end
+
+function musicSetting.draw()
+    love.graphics.setColor(217, 217, 217)
+    love.graphics.print('Musique', 100, 100)
+
+    for i, menu in ipairs(musicSettingMenu) do
+        if i == selectedMenuMusic then
+            love.graphics.setColor(0, 0, 0)
+            dxXTextCord = initialTextXCoord + 20
+        else
+            love.graphics.setColor(217, 217, 217)
+            dxXTextCord = initialTextXCoord
+        end
+
+        local offset = math.sin(time + i) * 3
+        love.graphics.print(menu, dxXTextCord + offset, (150 + 50 * i))
+    end
+end
+
+return musicSetting

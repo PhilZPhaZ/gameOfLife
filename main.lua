@@ -14,12 +14,13 @@ local game = require 'game'
 local menu = require 'menu'
 local saveLoad = require 'save_load'
 local setting = require 'settings'
+local musicSetting = require 'setting.music'
 
 -- globals variable
 gameState = 'game'
 menus = {'Charger', 'Sauvegarder', 'Paramètre', 'Quitter'}
-selectedMenu = 1
 selectedFile = 1
+selectedMenu = 1
 width = 1080
 height = 720
 isGenerating = false
@@ -31,6 +32,9 @@ cellSize = 20
 translate = false
 gridX, gridY = 0, 0
 
+-- music setting
+isPlaying = true
+soundVolume = 1
 
 function love.load()
     -- Configuration de la fenêtre
@@ -40,8 +44,8 @@ function love.load()
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
-    -- Charger les cellules du jeu
-    game.load(width, height)
+    -- music
+    source = love.audio.newSource('assets/audio/pixel_dream_in_motion.mp3', 'stream')
 end
 
 function love.update(dt)
@@ -51,6 +55,18 @@ function love.update(dt)
         menu.update(dt)
     elseif gameState == 'selectLoad' then
         saveLoad.update(dt)
+    elseif gameState == 'setting' then
+        setting.update(dt)
+    elseif gameState == 'musicSetting' then
+        musicSetting.update(dt)
+    end
+
+    if isPlaying then
+        if not source:isPlaying() then
+            source:play()
+        end
+    else
+        source:stop()
     end
 end
 
@@ -67,6 +83,8 @@ function love.keypressed(key)
         setting.keypressed(key)
     elseif gameState == 'clearing_confirmation' then
         clearing_confirmation.keypressed(key)
+    elseif gameState == 'musicSetting' then
+        musicSetting.keypressed(key)
     end
 end
 
@@ -83,5 +101,7 @@ function love.draw()
         setting.draw()
     elseif gameState == 'clearing_confirmation' then
         clearing_confirmation.draw()
+    elseif gameState == 'musicSetting' then
+        musicSetting.draw()
     end
 end

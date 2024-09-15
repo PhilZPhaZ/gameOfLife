@@ -6,6 +6,13 @@ local time = 0
 
 function menu.update(dt)
     time = time + dt
+    if time > 6.28 then
+        time = 0
+    end
+end
+
+function menu.init()
+
 end
 
 function menu.keypressed(key)
@@ -35,6 +42,8 @@ function menu.keypressed(key)
 end
 
 function menu.draw(selectedMenu, menus)
+    menus = menus or {'Charger', 'Sauvegarder', 'Paramètre', 'Quitter'}
+
     love.graphics.setColor(0, 0, 0)
     for i, menu in ipairs(menus) do
         if i == selectedMenu then
