@@ -5,7 +5,7 @@ local textStartXCoord = 100
 
 local helpingList = {
     'h: Afficher l\'aide',
-    'g: Générer la grille',
+    'g: Généreration automatique',
     'l: Générer la dernière génération',
     'r: Remplir la grille aléatoirement',
     'f: Remplir la grille',
