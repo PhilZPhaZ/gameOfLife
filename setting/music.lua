@@ -1,12 +1,11 @@
 local musicSetting = {}
 
 local soundVolume = 1
-local musicSettingMenu = {'Desactiver la musique', 'Volume : ' .. (soundVolume * 100), 'Retour'}
+local musicSettingMenu = {'Desactiver la musique', 'Volume : ' .. (soundVolume * 100) .. '%', 'Retour'}
 local time = 0
 local selectedMenuMusic = 1
 local initialTextXCoord = 100
 local dxXTextCord
-local isChangingVolume = false
 local soundVolumeChanging = 0.1
 
 function musicSetting.keypressed(key)
@@ -37,7 +36,7 @@ function musicSetting.keypressed(key)
                 end
             end
 
-            musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
+            musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
             source:setVolume(soundVolume)
         elseif selectedMenuMusic == 3 then
             gameState = 'setting'
@@ -47,14 +46,14 @@ function musicSetting.keypressed(key)
         if soundVolume > 1 then
             soundVolume = 1
         end
-        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
+        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
         source:setVolume(soundVolume)
     elseif key == 'left' and selectedMenuMusic == 2 then
         soundVolume = soundVolume - soundVolumeChanging
         if soundVolume < soundVolumeChanging then
             soundVolume = 0
         end
-        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100)
+        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
         source:setVolume(soundVolume)
     end
 end

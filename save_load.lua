@@ -46,7 +46,7 @@ function saveLoad.saveKeypressed(key)
         cells.saveToFile(saveName)
         saveName = ""
         gameState = 'menu'
-    elseif key ~= 'lshift' then
+    elseif (key ~= 'lshift') and (key ~= 'lctrl') and (key ~= 'lgui') then
         saveName = saveName .. key
     end
 end
@@ -55,7 +55,7 @@ function saveLoad.drawLoadMenu()
     love.filesystem.remove('saves/.DS_Store')
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
-    love.graphics.print('Sélectionner le fichier à ouvrir', 100, 100)
+    love.graphics.print('Sélectionner le fichier', 100, 100)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
     files = love.filesystem.getDirectoryItems('saves')
@@ -115,12 +115,16 @@ end
 
 function saveLoad.drawSaveMenu()
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
-    love.graphics.print('Menu de sauvegarde', 100, 100)
+    love.graphics.print('Sauvegarde', 100, 100)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
     love.graphics.print('Entrer le nom de la sauvegarde', 100, 180)
     love.graphics.print(saveName, 100, 250)
-    love.graphics.print('_', 100 + love.graphics.getFont():getWidth(saveName), 250)
+
+    -- print the underscore alternately to make the cursor blink
+    if time % 1 > 0.5 then
+        love.graphics.print('_', 100 + love.graphics.getFont():getWidth(saveName), 250)
+    end
 end
 
 return saveLoad

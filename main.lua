@@ -56,6 +56,8 @@ function love.update(dt)
         menu.update(dt)
     elseif gameState == 'selectLoad' then
         saveLoad.update(dt)
+    elseif gameState == 'selectSave' then
+        saveLoad.update(dt)
     elseif gameState == 'setting' then
         setting.update(dt)
     elseif gameState == 'musicSetting' then
