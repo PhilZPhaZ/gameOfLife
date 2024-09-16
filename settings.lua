@@ -1,6 +1,6 @@
 local settings = {}
 
-local settingsMenu = {'Musique', 'Fullscreen', 'Resolution', 'Retour'}
+local settingsMenu = {'Musique', 'Fullscreen', 'Résolution', 'Retour'}
 local selectedMenu = 1
 local time = 0
 local initialTextXCoord = 100
@@ -26,7 +26,7 @@ function settings.keypressed(key)
         elseif selectedMenu == 2 then
             love.window.setFullscreen(not love.window.getFullscreen())
         elseif selectedMenu == 3 then
-            
+            gameState = 'resolution'
         elseif selectedMenu == 4 then
             gameState = 'menu'
         end

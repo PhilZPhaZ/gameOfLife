@@ -3,7 +3,7 @@
     Auteur: philzphaz
     Date de création: 2024
     Description: Conway Game of Life
-    Version: 0.1.0
+    Version: 0.2.0
 
     note: - really bad code but it work
           - will add more functionnalies laters
@@ -16,6 +16,7 @@ local saveLoad = require 'save_load'
 local setting = require 'settings'
 local musicSetting = require 'setting.music'
 local help = require 'help'
+local resolution = require 'setting.resolution'
 
 -- globals variable
 gameState = 'game'
@@ -64,6 +65,8 @@ function love.update(dt)
         musicSetting.update(dt)
     elseif gameState == 'help' then
         help.update(dt)
+    elseif gameState == 'resolution' then
+        resolution.update(dt)
     end
 
     if isPlaying then
@@ -92,6 +95,8 @@ function love.keypressed(key)
         musicSetting.keypressed(key)
     elseif gameState == 'help' then
         help.keypressed(key)
+    elseif gameState == 'resolution' then
+        resolution.keypressed(key)
     end
 end
 
@@ -112,5 +117,7 @@ function love.draw()
         musicSetting.draw()
     elseif gameState == 'help' then
         help.draw()
+    elseif gameState == 'resolution' then
+        resolution.draw()
     end
 end
