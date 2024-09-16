@@ -60,7 +60,7 @@ function saveLoad.drawLoadMenu()
 
     files = love.filesystem.getDirectoryItems('saves')
     if #files == 0 then
-        love.graphics.print('No files found', 100, 150)
+        love.graphics.print('Pas de sauvegarde', 100, 200)
     end
 
     -- fucking bad scroll bar but it work
