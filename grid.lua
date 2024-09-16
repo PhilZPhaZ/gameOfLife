@@ -1,7 +1,5 @@
 local grid = {}
 local cellSize = 20
-local cellXNumber, cellYNumber
-local cells = {}
 local gridX, gridY = 0, 0
 local gridSave = {}
 local gridSaveIndex = 1
@@ -9,6 +7,25 @@ local zoomFactor = 1.1
 
 function grid.init(width, height)
 
+end
+
+function grid.save()
+    gridSave[gridSaveIndex] = {}
+    for x, elem in next, GRID do
+        for y, cell in next, elem do
+            table.insert(gridSave[gridSaveIndex], {x, y, cell})
+        end
+    end
+end
+
+function grid.load()
+    GRID = {}
+    for _, elem in next, gridSave[gridSaveIndex] do
+        if not GRID[elem[1]] then
+            GRID[elem[1]] = {}
+        end
+        GRID[elem[1]][elem[2]] = elem[3]
+    end
 end
 
 function grid.wheelmoved(x, y)
@@ -61,6 +78,10 @@ function grid.handleInput()
 end
 
 function grid.nextGeneration()
+    -- save the current grid
+    grid.save()
+    gridSaveIndex = gridSaveIndex + 1
+
     local cellToCheckWithAlgorithm = {}
     for x, elem in next, GRID do
         for y, cell in next, elem do
@@ -113,6 +134,13 @@ function grid.nextGeneration()
 
     -- remove all false cell in grid
     grid.removeFalseCell()
+end
+
+function grid.previousGeneration()
+    if gridSaveIndex > 1 then
+        gridSaveIndex = gridSaveIndex - 1
+        grid.load()
+    end
 end
 
 function grid.removeFalseCell()
@@ -206,7 +234,7 @@ function grid.draw(withInfos)
         love.graphics.rectangle('fill', 10, 70, (textFPSSize / 2) + 3, 30)
 
         -- size of the text generation
-        local textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex)
+        local textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex - 1)
         love.graphics.rectangle('fill', 10, 100, (textGenerationNumberSize / 2) + 3, 30)
 
         -- print the text for the menu
@@ -221,7 +249,7 @@ function grid.draw(withInfos)
         love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 70)
 
         -- print the text for the generation
-        love.graphics.print('Génération : ' .. gridSaveIndex, 10, 100)
+        love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 100)
 
         love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
     end

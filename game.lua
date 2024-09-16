@@ -13,7 +13,7 @@ function game.update(dt)
         grid.nextGeneration()
     end
     if isGeneratingLastGeneration then
-
+        grid.previousGeneration()
     end
 
     grid.handleInput()
@@ -22,6 +22,8 @@ end
 function game.keypressed(key)
     if key == 'space' or key == 'right' then
         grid.nextGeneration()
+    elseif key == 'left' then
+        grid.previousGeneration()
     elseif key == 'return' or key == 'backspace' then
         gameState = 'clearing_confirmation'
     elseif key == 'escape' then
