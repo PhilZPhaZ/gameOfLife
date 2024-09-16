@@ -30,6 +30,7 @@ function grid.update(dt)
     -- size of the text generation
     textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex - 1)
 
+    -- get the max size of the text
     maxTextSize = math.max((textMenuSize / 2), (textHelpSize / 2), (textFPSSize / 2), (textGenerationNumberSize / 2))
 end
 
@@ -250,26 +251,30 @@ function grid.draw(withInfos)
     end
 
     if withInfos and helpMenu then
-        -- print a big rectangle for the menu
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('fill', 7, 10, maxTextSize + 6, 120)
-
-        -- print the text for the menu
-        love.graphics.setColor(217, 217, 217)
-        love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
-        love.graphics.print('Echap : Menu', 10, 10)
-
-        -- print the text for the help
-        love.graphics.print('Aide : h', 10, 40)
-
-        -- print the text for the fps
-        love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 70)
-
-        -- print the text for the generation
-        love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 100)
-
-        love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
+        grid.drawHelpMenu()
     end
+end
+
+function grid.drawHelpMenu()
+    -- print a big rectangle for the menu
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', 7, 10, maxTextSize + 6, 120)
+
+    -- print the text for the menu
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
+    love.graphics.print('Echap : Menu', 10, 10)
+
+    -- print the text for the help
+    love.graphics.print('Aide : h', 10, 40)
+
+    -- print the text for the fps
+    love.graphics.print('FPS : ' .. love.timer.getFPS(), 10, 70)
+
+    -- print the text for the generation
+    love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 100)
+
+    love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 end
 
 function grid.random()
@@ -290,6 +295,8 @@ end
 
 function grid.clear()
     GRID = {}
+    gridSave = {}
+    gridSaveIndex = 1
 end
 
 function grid.saveToFile(saveName)

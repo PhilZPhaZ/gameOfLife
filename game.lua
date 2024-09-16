@@ -1,8 +1,6 @@
 local grid = require 'grid'
-local clr = require 'clearing_confirmation'
 
 local game = {}
-local source
 
 function game.load(width, height)
     

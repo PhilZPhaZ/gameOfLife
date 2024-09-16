@@ -17,6 +17,7 @@ local setting = require 'settings'
 local musicSetting = require 'setting.music'
 local help = require 'help'
 local resolution = require 'setting.resolution'
+local clearing_confirmation = require 'clearing_confirmation'
 
 -- globals variable
 gameState = 'game'
