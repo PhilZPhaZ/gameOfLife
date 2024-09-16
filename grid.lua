@@ -4,9 +4,33 @@ local gridX, gridY = 0, 0
 local gridSave = {}
 local gridSaveIndex = 1
 local zoomFactor = 1.1
+local helpMenu = true
+
+-- rectangle size
+local textMenuSize
+local textHelpSize
+local textFPSSize
+local textGenerationNumberSize
+local maxTextSize = 0
 
 function grid.init(width, height)
 
+end
+
+function grid.update(dt)
+    -- rectangle for menu
+    textMenuSize = love.graphics.getFont():getWidth('Echap : Menu')
+
+    -- rectangle for help
+    textHelpSize = love.graphics.getFont():getWidth('Aide : h')
+
+    -- rectangle for fps
+    textFPSSize = love.graphics.getFont():getWidth('FPS : ' .. love.timer.getFPS())
+
+    -- size of the text generation
+    textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex - 1)
+
+    maxTextSize = math.max((textMenuSize / 2), (textHelpSize / 2), (textFPSSize / 2), (textGenerationNumberSize / 2))
 end
 
 function grid.save()
@@ -184,6 +208,12 @@ function love.mousemoved(x, y, dx, dy)
             gridX = gridX + dx
             gridY = gridY + dy
         end
+
+        if x >= 7 and x <= 7 + maxTextSize + 6 and y >= 10 and y <= 130 then
+            helpMenu = false
+        else
+            helpMenu = true
+        end
     end
 end
 
@@ -219,23 +249,10 @@ function grid.draw(withInfos)
         end
     end
 
-    if withInfos then
+    if withInfos and helpMenu then
+        -- print a big rectangle for the menu
         love.graphics.setColor(0, 0, 0)
-        -- rectangle for menu
-        local textMenuSize = love.graphics.getFont():getWidth('Echap : Menu')
-        love.graphics.rectangle('fill', 10, 10, (textMenuSize / 2) + 3, 30)
-
-        -- rectangle for help
-        local textHelpSize = love.graphics.getFont():getWidth('Aide : h')
-        love.graphics.rectangle('fill', 10, 40, (textHelpSize / 2) + 3, 30)
-
-        -- rectangle for fps
-        local textFPSSize = love.graphics.getFont():getWidth('FPS : ' .. love.timer.getFPS())
-        love.graphics.rectangle('fill', 10, 70, (textFPSSize / 2) + 3, 30)
-
-        -- size of the text generation
-        local textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex - 1)
-        love.graphics.rectangle('fill', 10, 100, (textGenerationNumberSize / 2) + 3, 30)
+        love.graphics.rectangle('fill', 7, 10, maxTextSize + 6, 120)
 
         -- print the text for the menu
         love.graphics.setColor(217, 217, 217)

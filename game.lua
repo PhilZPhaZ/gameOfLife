@@ -16,6 +16,7 @@ function game.update(dt)
         grid.previousGeneration()
     end
 
+    grid.update(dt)
     grid.handleInput()
 end
 
