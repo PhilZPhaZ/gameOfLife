@@ -19,7 +19,7 @@ local help = require 'help'
 
 -- globals variable
 gameState = 'game'
-menus = {'Charger', 'Sauvegarder', 'Paramètre', 'Quitter'}
+menus = {'Charger', 'Sauvegarder', 'Paramètre', 'Retour', 'Quitter'}
 selectedFile = 1
 selectedMenu = 1
 width = 1080

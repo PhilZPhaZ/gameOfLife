@@ -36,6 +36,8 @@ function menu.keypressed(key)
         elseif selectedMenu == 3 then
             gameState = 'setting'
         elseif selectedMenu == 4 then
+            gameState = 'game'
+        elseif selectedMenu == 5 then
             love.event.quit()
         end
     end
