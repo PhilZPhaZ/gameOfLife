@@ -5,8 +5,7 @@
     Description: Conway Game of Life
     Version: 0.2.0
 
-    note: - really bad code but it work
-          - will add more functionnalies laters
+    note: - need to work on optimisation because it's not bad but it could be better
 ]]
 
 -- load modules
