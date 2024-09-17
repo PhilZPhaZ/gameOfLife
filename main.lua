@@ -3,9 +3,9 @@
     Auteur: philzphaz
     Date de création: 2024
     Description: Conway Game of Life
-    Version: 0.2.0
+    Version: 0.2.1
 
-    note: - need to work on optimisation because it's not bad but it could be better
+    note: - NEXT BIG UPDATE : THREADING
 ]]
 
 -- load modules
