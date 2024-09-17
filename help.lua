@@ -13,7 +13,7 @@ local helpingList = {
     'gauche: Générer la génération précédente',
     'return: Effacer la grille',
     'escape: Retourner au jeu',
-    'Clic gauche: Déplacer la grille',
+    'Clic gauche+ctrl/clic molette: Déplacer la grille',
     'Molette: Zoomer/Dézoomer',
     'Clic gauche: Remplir la cellule',
     'Clic droit: Effacer la cellule'

@@ -3,7 +3,7 @@ local grid = require 'grid'
 local game = {}
 
 function game.load()
-    
+    grid.init()
 end
 
 function game.update(dt)

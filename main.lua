@@ -17,6 +17,7 @@ local musicSetting = require 'setting.music'
 local help = require 'help'
 local resolution = require 'setting.resolution'
 local clearing_confirmation = require 'clearing_confirmation'
+local grid = require 'grid'
 
 -- globals variable
 gameState = 'game'
@@ -48,6 +49,9 @@ function love.load()
 
     -- music
     source = love.audio.newSource('assets/audio/pixel_dream_in_motion.mp3', 'stream')
+
+    -- load the game
+    game.load()
 end
 
 function love.update(dt)
@@ -120,4 +124,32 @@ function love.draw()
     elseif gameState == 'resolution' then
         resolution.draw()
     end
+end
+
+function love.mousepressed(x, y, button)
+    if gameState == 'game' then
+        grid.mousepressed(x, y, button)
+    end
+end
+
+function love.mousereleased(x, y, button)
+    if gameState == 'game' then
+        grid.mousereleased(x, y, button)
+    end
+end
+
+function love.wheelmoved(x, y)
+    if gameState == 'game' then
+        grid.wheelmoved(x, y)
+    end
+end
+
+function love.mousemoved(x, y, dx, dy)
+    if gameState == 'game' then
+        grid.mousemoved(x, y, dx, dy)
+    end
+end
+
+function love.exit()
+    source:stop()
 end

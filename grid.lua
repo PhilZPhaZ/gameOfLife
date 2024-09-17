@@ -1,3 +1,5 @@
+local lib = require 'lib.generation'
+
 local grid = {}
 local cellSize = 20
 local gridX, gridY = 0, 0
@@ -11,7 +13,14 @@ local textMenuSize
 local textHelpSize
 local textFPSSize
 local textGenerationNumberSize
+local textMousePositionSize
 local maxTextSize = 0
+
+-- rectangle for the selection
+local selectionRectangle = false
+local startXRectangle, startYRectangle = 0, 0
+local endXRectangle, endYRectangle = 0, 0
+local selection = {}
 
 function grid.init()
 
@@ -30,15 +39,22 @@ function grid.update(dt)
     -- size of the text generation
     textGenerationNumberSize = love.graphics.getFont():getWidth('Génération : ' .. gridSaveIndex - 1)
 
+    -- size of the text of the current mouse position on the cell
+    textMousePositionSize = love.graphics.getFont():getWidth('Position : ' .. math.floor((love.mouse.getX() - gridX) / cellSize) .. ' ' .. math.floor((love.mouse.getY() - gridY) / cellSize))
+
     -- get the max size of the text
-    maxTextSize = math.max((textMenuSize / 2), (textHelpSize / 2), (textFPSSize / 2), (textGenerationNumberSize / 2))
+    maxTextSize = math.max((textMenuSize / 2), (textHelpSize / 2), (textFPSSize / 2), (textGenerationNumberSize / 2), (textMousePositionSize / 2))
 end
 
 function grid.save()
-    gridSave[gridSaveIndex] = {}
-    for x, elem in next, GRID do
-        for y, cell in next, elem do
-            table.insert(gridSave[gridSaveIndex], {x, y, cell})
+    if next(GRID) == nil then
+        gridSave[gridSaveIndex] = {}
+    else
+        gridSave[gridSaveIndex] = {}
+        for x, elem in next, GRID do
+            for y, cell in next, elem do
+                table.insert(gridSave[gridSaveIndex], {x, y, cell})
+            end
         end
     end
 end
@@ -53,25 +69,8 @@ function grid.load()
     end
 end
 
-function grid.wheelmoved(x, y)
-    if y ~= 0 then
-        -- Obtenir la position de la souris
-        local mouseX, mouseY = love.mouse.getPosition()
-
-        -- Calculer le facteur de zoom
-        local zoom = (y > 0) and zoomFactor or (1 / zoomFactor)
-
-        -- Ajuster les coordonnées de la grille
-        gridX = mouseX - (mouseX - gridX) * zoom
-        gridY = mouseY - (mouseY - gridY) * zoom
-
-        -- Appliquer le zoom
-        cellSize = cellSize * zoom
-    end
-end
-
 function grid.handleInput()
-    if love.mouse.isDown(1) and not love.keyboard.isDown('lctrl') then
+    if love.mouse.isDown(1) and not love.keyboard.isDown('lctrl') and not love.keyboard.isDown('lshift') then
         -- Calculer la cellule cliquée
         local x = love.mouse.getX()
         local y = love.mouse.getY()
@@ -104,60 +103,13 @@ end
 
 function grid.nextGeneration()
     -- save the current grid
+    grid.removeFalseCell()
     grid.save()
     gridSaveIndex = gridSaveIndex + 1
 
-    local cellToCheckWithAlgorithm = {}
-    for x, elem in next, GRID do
-        for y, cell in next, elem do
-            for dx = -1, 1 do
-                for dy = -1, 1 do
-                    if not cellToCheckWithAlgorithm[x + dx] then
-                        cellToCheckWithAlgorithm[x + dx] = {}
-                    end
+    -- get the next generation
+    GRID = lib.newtGeneration(GRID)
 
-                    if cellToCheckWithAlgorithm[x + dx] and cellToCheckWithAlgorithm[x + dx][y + dy] then
-                        cellToCheckWithAlgorithm[x + dx][y + dy] = true
-                    elseif GRID[x + dx] and GRID[x + dx][y + dy] then
-                        cellToCheckWithAlgorithm[x + dx][y + dy] = GRID[x + dx][y + dy]
-                    else
-                        cellToCheckWithAlgorithm[x + dx][y + dy] = false
-                    end
-                end
-            end
-        end
-    end
-
-    for x, elem in next, cellToCheckWithAlgorithm do
-        for y, cell in next, elem do
-            local count = 0
-            for dx = -1, 1 do
-                for dy = -1, 1 do
-                    if cellToCheckWithAlgorithm[x + dx] and cellToCheckWithAlgorithm[x + dx][y + dy] then
-                        count = count + 1
-                    end
-                end
-            end
-
-            if cellToCheckWithAlgorithm[x][y] then
-                count = count - 1
-            end
-
-            if count == 3 then
-                if not GRID[x] then
-                    GRID[x] = {}
-                end
-                GRID[x][y] = true
-            elseif count < 2 or count > 3 then
-                if not GRID[x] then
-                    GRID[x] = {}
-                end
-                GRID[x][y] = false
-            end
-        end
-    end
-
-    -- remove all false cell in grid
     grid.removeFalseCell()
 end
 
@@ -181,40 +133,49 @@ function grid.removeFalseCell()
     end
 end
 
-function love.mousepressed(x, y, button)
-    if gameState == 'game' then
-        if button == 1 and love.keyboard.isDown('lctrl') then -- Bouton gauche de la souris
-            translate = true
-        end
+function grid.mousepressed(x, y, button)
+    if (button == 1 and love.keyboard.isDown('lctrl')) or button == 3 then -- Bouton gauche de la souris
+        translate = true
     end
 end
 
-function love.mousereleased(x, y, button)
-    if gameState == 'game' then
-        if button == 1 then
-            translate = false
-        end
+function grid.mousereleased(x, y, button)
+    if button == 1 or button == 3 then
+        translate = false
     end
 end
 
-function love.wheelmoved(x, y)
-    if gameState == 'game' then
-        grid.wheelmoved(x, y)
+function grid.wheelmoved(x, y)
+    grid.proccesWheelMoved(x, y)
+end
+
+function grid.proccesWheelMoved(x, y)
+    if y ~= 0 then
+        -- Obtenir la position de la souris
+        local mouseX, mouseY = love.mouse.getPosition()
+
+        -- Calculer le facteur de zoom
+        local zoom = (y > 0) and zoomFactor or (1 / zoomFactor)
+
+        -- Ajuster les coordonnées de la grille
+        gridX = mouseX - (mouseX - gridX) * zoom
+        gridY = mouseY - (mouseY - gridY) * zoom
+
+        -- Appliquer le zoom
+        cellSize = cellSize * zoom
     end
 end
 
-function love.mousemoved(x, y, dx, dy)
-    if gameState == 'game' then
-        if translate then
-            gridX = gridX + dx
-            gridY = gridY + dy
-        end
+function grid.mousemoved(x, y, dx, dy)
+    if translate then
+        gridX = gridX + dx
+        gridY = gridY + dy
+    end
 
-        if x >= 7 and x <= 7 + maxTextSize + 6 and y >= 10 and y <= 130 then
-            helpMenu = false
-        else
-            helpMenu = true
-        end
+    if x >= 7 and x <= 7 + maxTextSize + 6 and y >= 10 and y <= 160 then
+        helpMenu = false
+    else
+        helpMenu = true
     end
 end
 
@@ -268,7 +229,7 @@ end
 function grid.drawHelpMenu()
     -- print a big rectangle for the menu
     love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('fill', 7, 10, maxTextSize + 6, 120)
+    love.graphics.rectangle('fill', 7, 10, maxTextSize + 6, 150)
 
     -- print the text for the menu
     love.graphics.setColor(1, 1, 1)
@@ -283,6 +244,9 @@ function grid.drawHelpMenu()
 
     -- print the text for the generation
     love.graphics.print('Génération : ' .. gridSaveIndex - 1, 10, 100)
+
+    -- print the text for the current mouse position on the cell
+    love.graphics.print('Position : ' .. math.floor((love.mouse.getX() - gridX) / cellSize) .. ',' .. math.floor((love.mouse.getY() - gridY) / cellSize), 10, 130)
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 end
