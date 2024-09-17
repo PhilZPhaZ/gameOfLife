@@ -13,7 +13,7 @@ local textFPSSize
 local textGenerationNumberSize
 local maxTextSize = 0
 
-function grid.init(width, height)
+function grid.init()
 
 end
 

@@ -2,7 +2,7 @@ local grid = require 'grid'
 
 local game = {}
 
-function game.load(width, height)
+function game.load()
     
 end
 

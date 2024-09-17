@@ -5,7 +5,6 @@ local selectedMenu = 1
 local time = 0
 local initialTextXCoord = 100
 local dxXTextCord
-local musicSetting = false
 
 function settings.keypressed(key)
     if key == 'escape' then
