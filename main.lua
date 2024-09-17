@@ -38,6 +38,7 @@ gridX, gridY = 0, 0
 -- music setting
 isPlaying = true
 soundVolume = 1
+musicIndex = 1
 
 function love.load()
     -- Configuration de la fenêtre
@@ -47,8 +48,12 @@ function love.load()
     love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
-    -- music
-    source = love.audio.newSource('assets/audio/pixel_dream_in_motion.mp3', 'stream')
+    -- music, load musics from assets/audio (there are 3 musics)
+    source = {
+        love.audio.newSource('assets/audio/generating_source.mp3', 'stream'),
+        love.audio.newSource('assets/audio/rocking_ram.mp3', 'stream'),
+        love.audio.newSource('assets/audio/pixel_dream_in_motion.mp3', 'stream'),
+    }
 
     -- load the game
     game.load()
@@ -74,11 +79,15 @@ function love.update(dt)
     end
 
     if isPlaying then
-        if not source:isPlaying() then
-            source:play()
+        if not source[musicIndex]:isPlaying() then
+            musicIndex = musicIndex + 1
+            if musicIndex > #source then
+                musicIndex = 1
+            end
         end
+        source[musicIndex]:play()
     else
-        source:stop()
+        source[musicIndex]:stop()
     end
 end
 
@@ -151,5 +160,5 @@ function love.mousemoved(x, y, dx, dy)
 end
 
 function love.exit()
-    source:stop()
+
 end
