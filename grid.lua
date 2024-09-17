@@ -235,6 +235,16 @@ function grid.draw(withInfos)
                     love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
                 end
                 love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize - 1, cellSize - 1)
+
+                -- draw a line with a different color every 16 cells
+                if x % 10 == 0 then
+                    love.graphics.setColor(0.35, 0.35, 0.35)
+                    love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, 1, cellSize)
+                end
+                if y % 10 == 0 then
+                    love.graphics.setColor(0.35, 0.35, 0.35)
+                    love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize, 1)
+                end
             end
         end
     else
