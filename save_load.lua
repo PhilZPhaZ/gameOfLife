@@ -119,7 +119,9 @@ function saveLoad.drawSaveMenu()
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
 
     love.graphics.print('Entrer le nom de la sauvegarde', 100, 180)
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(saveName, 100, 250)
+    love.graphics.setColor(1, 1, 1)
 
     -- print the underscore alternately to make the cursor blink
     if time % 1 > 0.5 then
