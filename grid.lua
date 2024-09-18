@@ -91,18 +91,16 @@ function grid.handleInput()
         local cellY = math.floor((y - gridY) / cellSize)
 
         -- Changer la couleur de la cellule cliquée
-        if not GRID[cellX] then
-            GRID[cellX] = {}
+        if GRID[cellX] then
+            GRID[cellX][cellY] = nil
+            if next(GRID[cellX]) == nil then
+                GRID[cellX] = nil
+            end
         end
-            
-        GRID[cellX][cellY] = false
     end
 end
 
 function grid.nextGeneration()
-    -- save the current grid
-    grid.removeFalseCell()
-    grid.save()
     gridSaveIndex = gridSaveIndex + 1
 
     -- send the grid to the thread
@@ -216,7 +214,7 @@ function grid.draw(withInfos)
                 if GRID[x] and GRID[x][y] then
                     love.graphics.setColor(0, 0, 0)
                 else
-                    love.graphics.setColor(217, 217, 217) -- Gris par défaut si la cellule n'a pas de couleur définie
+                    love.graphics.setColor(1, 1, 1) -- Gris par défaut si la cellule n'a pas de couleur définie
                 end
                 love.graphics.rectangle("fill", x * cellSize + gridX, y * cellSize + gridY, cellSize, cellSize)
             end

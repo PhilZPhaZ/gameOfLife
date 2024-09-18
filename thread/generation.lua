@@ -17,16 +17,12 @@ while running do
                 for y, cell in next, elem do
                     for dx = -1, 1 do
                         for dy = -1, 1 do
-                            if not cellToCheckWithAlgorithm[x + dx] then
-                                cellToCheckWithAlgorithm[x + dx] = {}
+                            local nx, ny = x + dx, y + dy
+                            if not cellToCheckWithAlgorithm[nx] then
+                                cellToCheckWithAlgorithm[nx] = {}
                             end
-
-                            if cellToCheckWithAlgorithm[x + dx] and cellToCheckWithAlgorithm[x + dx][y + dy] then
-                                cellToCheckWithAlgorithm[x + dx][y + dy] = true
-                            elseif GRID[x + dx] and GRID[x + dx][y + dy] then
-                                cellToCheckWithAlgorithm[x + dx][y + dy] = GRID[x + dx][y + dy]
-                            else
-                                cellToCheckWithAlgorithm[x + dx][y + dy] = false
+                            if cellToCheckWithAlgorithm[nx][ny] == nil then
+                                cellToCheckWithAlgorithm[nx][ny] = GRID[nx] and GRID[nx][ny] or false
                             end
                         end
                     end
