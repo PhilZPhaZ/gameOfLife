@@ -1,5 +1,3 @@
-local lib = require 'lib.generation'
-
 local grid = {}
 local cellSize = 20
 local gridX, gridY = 0, 0
@@ -107,8 +105,11 @@ function grid.nextGeneration()
     grid.save()
     gridSaveIndex = gridSaveIndex + 1
 
-    -- get the next generation
-    GRID = lib.newtGeneration(GRID)
+    -- send the grid to the thread
+    threadChannel:push(GRID)
+
+    -- get the result from the thread
+    GRID = resultChannel:demand()
 
     grid.removeFalseCell()
 end

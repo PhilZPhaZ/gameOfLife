@@ -1,7 +1,11 @@
 local musicSetting = {}
 
 local soundVolume = 1
-local musicSettingMenu = {'Desactiver la musique', 'Volume : ' .. (soundVolume * 100) .. '%', 'Retour'}
+local musicSettingMenu = {
+    'Desactiver la musique',
+    'Changer la musique',
+    'Volume : ' .. (soundVolume * 100) .. '%',
+    'Retour'}
 local time = 0
 local selectedMenuMusic = 1
 local initialTextXCoord = 100
@@ -26,6 +30,15 @@ function musicSetting.keypressed(key)
             isPlaying = not isPlaying
             musicSettingMenu[1] = isPlaying and 'Desactiver la musique' or 'Activer la musique'
         elseif selectedMenuMusic == 2 then
+            -- stop the current music
+            source[musicIndex]:stop()
+
+            musicIndex = musicIndex + 1
+            if musicIndex > #source then
+                musicIndex = 1
+            end
+            source[musicIndex]:play()
+        elseif selectedMenuMusic == 3 then
             if soundVolume == 0 then
                 soundVolume = 1
             else
@@ -41,14 +54,14 @@ function musicSetting.keypressed(key)
         elseif selectedMenuMusic == 3 then
             gameState = 'setting'
         end
-    elseif key == 'right' and selectedMenuMusic == 2 then
+    elseif key == 'right' and selectedMenuMusic == 3 then
         soundVolume = soundVolume + soundVolumeChanging
         if soundVolume > 1 then
             soundVolume = 1
         end
         musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
         source[musicIndex]:setVolume(soundVolume)
-    elseif key == 'left' and selectedMenuMusic == 2 then
+    elseif key == 'left' and selectedMenuMusic == 3 then
         soundVolume = soundVolume - soundVolumeChanging
         if soundVolume < soundVolumeChanging then
             soundVolume = 0

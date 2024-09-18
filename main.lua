@@ -40,6 +40,11 @@ isPlaying = true
 soundVolume = 1
 musicIndex = 1
 
+-- thread
+threadChannel = love.thread.getChannel("gridInfo")
+resultChannel = love.thread.getChannel("gridResult")
+thread = love.thread.newThread('thread/generation.lua')
+
 function love.load()
     -- Configuration de la fenêtre
     love.window.setMode(width, height, {resizable = true, minwidth = 1080, minheight = 720})
@@ -51,12 +56,15 @@ function love.load()
     -- music, load musics from assets/audio (there are 3 musics)
     source = {
         love.audio.newSource('assets/audio/generating_source.mp3', 'stream'),
-        love.audio.newSource('assets/audio/rocking_ram.mp3', 'stream'),
         love.audio.newSource('assets/audio/pixel_dream_in_motion.mp3', 'stream'),
+        love.audio.newSource('assets/audio/rocking_ram.mp3', 'stream'),
     }
 
     -- load the game
     game.load()
+
+    -- thread
+    thread:start()
 end
 
 function love.update(dt)
@@ -160,5 +168,8 @@ function love.mousemoved(x, y, dx, dy)
 end
 
 function love.exit()
-
+    threadChannel:push('stop')
+    thread:wait()
+    source[musicIndex]:stop()
+    love.audio.stop()
 end
