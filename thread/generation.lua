@@ -4,7 +4,7 @@ local resultChannel = love.thread.getChannel("gridResult")
 local running = true
 
 while running do
-    local message = threadChannel:demand()
+    local message = threadChannel:pop()
 
     if message then
         if message == 'stop' then
