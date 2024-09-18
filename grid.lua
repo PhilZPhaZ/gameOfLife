@@ -116,6 +116,7 @@ end
 
 function grid.previousGeneration()
     if gridSaveIndex > 1 then
+        GRID[gridSaveIndex] = nil
         gridSaveIndex = gridSaveIndex - 1
         grid.load()
     end
