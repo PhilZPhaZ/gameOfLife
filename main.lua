@@ -58,6 +58,7 @@ function love.load()
         love.audio.newSource('assets/audio/rocking_ram.mp3', 'stream'),
         love.audio.newSource('assets/audio/generating_source.mp3', 'stream'),
         love.audio.newSource('assets/audio/pixel_dream_in_motion.mp3', 'stream'),
+        love.audio.newSource('assets/audio/shaderisation.mp3', 'stream'),
     }
 
     -- load the game
