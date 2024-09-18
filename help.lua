@@ -1,7 +1,7 @@
 local grid = require 'grid'
 
 local help = {}
-local textStartXCoord = 100
+local textStartYCoord = 100
 
 local helpingList = {
     'h: Afficher l\'aide',
@@ -50,15 +50,20 @@ function help.draw()
     -- draw a rectangle around the text
     love.graphics.setColor(0, 0, 0)
     local textHelpHeight = love.graphics.getFont():getHeight('Aide')
-    love.graphics.rectangle('fill', textXCoord - 10, textStartXCoord, (longestText / 2) + 20, 190 - textHelpHeight + 30 * #helpingList)
+    local rectangleHeight = 190 - textHelpHeight + 30 * #helpingList
+
+    -- get the y coordinate of the rectangle to center it
+    local rectangleYCoord = (love.graphics.getHeight() - rectangleHeight) / 2
+
+    love.graphics.rectangle('fill', textXCoord - 10, rectangleYCoord, (longestText / 2) + 20, rectangleHeight)
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 60))
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print('Aide', textXCoord, textStartXCoord)
+    love.graphics.print('Aide', textXCoord, rectangleYCoord)
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 20))
 
     for i, menu in ipairs(helpingList) do
-        love.graphics.print(menu, textXCoord, (textStartXCoord + 80 + 30 * i))
+        love.graphics.print(menu, textXCoord, (rectangleYCoord + 80 + 30 * i))
     end
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
