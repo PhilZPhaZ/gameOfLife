@@ -5,6 +5,8 @@ local gridSave = {}
 local gridSaveIndex = 1
 local zoomFactor = 1.1
 local helpMenu = true
+local x, y
+local cellX, cellY
 
 -- rectangle size
 local textMenuSize
@@ -70,11 +72,11 @@ end
 function grid.handleInput()
     if love.mouse.isDown(1) and not love.keyboard.isDown('lctrl') and not love.keyboard.isDown('lshift') then
         -- Calculer la cellule cliquée
-        local x = love.mouse.getX()
-        local y = love.mouse.getY()
+        x = love.mouse.getX()
+        y = love.mouse.getY()
 
-        local cellX = math.floor((x - gridX) / cellSize)
-        local cellY = math.floor((y - gridY) / cellSize)
+        cellX = math.floor((x - gridX) / cellSize)
+        cellY = math.floor((y - gridY) / cellSize)
 
         -- Changer la couleur de la cellule cliquée
         if not GRID[cellX] then
@@ -84,11 +86,11 @@ function grid.handleInput()
         GRID[cellX][cellY] = true
     elseif love.mouse.isDown(2) then
         -- Calculer la cellule cliquée
-        local x = love.mouse.getX()
-        local y = love.mouse.getY()
+        x = love.mouse.getX()
+        y = love.mouse.getY()
 
-        local cellX = math.floor((x - gridX) / cellSize)
-        local cellY = math.floor((y - gridY) / cellSize)
+        cellX = math.floor((x - gridX) / cellSize)
+        cellY = math.floor((y - gridY) / cellSize)
 
         -- Changer la couleur de la cellule cliquée
         if GRID[cellX] then
@@ -142,8 +144,6 @@ function grid.mousepressed(x, y, button)
 
         selectionRectangle = true
     elseif button == 1 and isPasting then
-        isPasting = false
-
         -- paste the selection in the grid
         local xMouse, yMouse = love.mouse.getPosition()
         local x = math.floor((xMouse - gridX) / cellSize)
