@@ -16,7 +16,9 @@ local helpingList = {
     'Clic gauche+ctrl/clic molette: Déplacer la grille',
     'Molette: Zoomer/Dézoomer',
     'Clic gauche: Remplir la cellule',
-    'Clic droit: Effacer la cellule'
+    'Clic droit: Effacer la cellule',
+    'Clic droit+shift: Copier la selection',
+    'p: Coller la selection',
 }
 local time = 0
 

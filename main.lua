@@ -3,9 +3,9 @@
     Auteur: philzphaz
     Date de création: 2024
     Description: Conway Game of Life
-    Version: 0.2.1
+    Version: 0.3.0
 
-    note: - NEXT BIG UPDATE : THREADING
+    note: - NEXT BIG UPDATE : OPTIMISATION
 ]]
 
 -- load modules
@@ -44,6 +44,9 @@ musicIndex = 1
 threadChannel = love.thread.getChannel("gridInfo")
 resultChannel = love.thread.getChannel("gridResult")
 thread = love.thread.newThread('thread/generation.lua')
+
+-- copy and paste
+isPasting = false
 
 function love.load()
     -- Configuration de la fenêtre

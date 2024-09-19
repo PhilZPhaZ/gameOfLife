@@ -136,12 +136,79 @@ end
 function grid.mousepressed(x, y, button)
     if (button == 1 and love.keyboard.isDown('lctrl')) or button == 3 then -- Bouton gauche de la souris
         translate = true
+    elseif button == 1 and love.keyboard.isDown('lshift') then
+        startXRectangle, startYRectangle = x, y
+        endXRectangle, endYRectangle = x, y
+
+        selectionRectangle = true
+    elseif button == 1 and isPasting then
+        isPasting = false
+
+        -- paste the selection in the grid
+        local xMouse, yMouse = love.mouse.getPosition()
+        local x = math.floor((xMouse - gridX) / cellSize)
+        local y = math.floor((yMouse - gridY) / cellSize)
+
+        for xSelection, elem in next, selection do
+            for ySelection, cell in next, elem do
+                if not GRID[x + xSelection] then
+                    GRID[x + xSelection] = {}
+                end
+                GRID[x + xSelection][y + ySelection] = cell
+            end
+        end
+    elseif button == 2 and isPasting then
+        isPasting = false
     end
 end
 
 function grid.mousereleased(x, y, button)
     if button == 1 or button == 3 then
         translate = false
+        if selectionRectangle then
+            selectionRectangle = false
+
+            grid.saveSelectecSave()
+        end
+    end
+end
+
+function grid.saveSelectecSave()
+    -- get the selection but the coords are relative to the mouse position
+    local xStart = math.floor((startXRectangle - gridX) / cellSize)
+    local yStart = math.floor((startYRectangle - gridY) / cellSize)
+    local xEnd = math.floor((endXRectangle - gridX) / cellSize)
+    local yEnd = math.floor((endYRectangle - gridY) / cellSize)
+
+    -- get the selection
+    selection = {}
+    for x = xStart, xEnd do
+        for y = yStart, yEnd do
+            if GRID[x] and GRID[x][y] then
+                if not selection[x - xStart] then
+                    selection[x - xStart] = {}
+                end
+                selection[x - xStart][y - yStart] = true
+            end
+        end
+    end
+end
+
+function grid.mousemoved(x, y, dx, dy)
+    if translate then
+        gridX = gridX + dx
+        gridY = gridY + dy
+    end
+
+    if x >= 7 and x <= 7 + maxTextSize + 6 and y >= 10 and y <= 160 then
+        helpMenu = false
+    else
+        helpMenu = true
+    end
+
+    -- selection rectangle
+    if selectionRectangle then
+        endXRectangle, endYRectangle = x, y
     end
 end
 
@@ -163,19 +230,6 @@ function grid.proccesWheelMoved(x, y)
 
         -- Appliquer le zoom
         cellSize = cellSize * zoom
-    end
-end
-
-function grid.mousemoved(x, y, dx, dy)
-    if translate then
-        gridX = gridX + dx
-        gridY = gridY + dy
-    end
-
-    if x >= 7 and x <= 7 + maxTextSize + 6 and y >= 10 and y <= 160 then
-        helpMenu = false
-    else
-        helpMenu = true
     end
 end
 
@@ -224,6 +278,14 @@ function grid.draw(withInfos)
     if withInfos and helpMenu then
         grid.drawHelpMenu()
     end
+
+    if selectionRectangle then
+        grid.drawSelectionRectangle()
+    end
+
+    if isPasting then
+        grid.drawPaste()
+    end
 end
 
 function grid.drawHelpMenu()
@@ -249,6 +311,29 @@ function grid.drawHelpMenu()
     love.graphics.print('Position : ' .. math.floor((love.mouse.getX() - gridX) / cellSize) .. ',' .. math.floor((love.mouse.getY() - gridY) / cellSize), 10, 130)
 
     love.graphics.setFont(love.graphics.newFont('assets/fonts/8bitoperator.ttf', 40))
+end
+
+function grid.drawSelectionRectangle()
+    love.graphics.setLineWidth(2)
+    love.graphics.setColor(0, 0, 0.7)
+    love.graphics.rectangle('line', startXRectangle, startYRectangle, endXRectangle - startXRectangle, endYRectangle - startYRectangle)
+    love.graphics.setLineWidth(1)
+end
+
+function grid.drawPaste()
+
+    -- draw the selection depending on the mouse position
+    local xMouse, yMouse = love.mouse.getPosition()
+    local x = math.floor((xMouse - gridX) / cellSize)
+    local y = math.floor((yMouse - gridY) / cellSize)
+
+    -- print the selection on the grid where the mouse is
+    for xSelection, elem in next, selection do
+        for ySelection, cell in next, elem do
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.rectangle('fill', (x + xSelection) * cellSize + gridX, (y + ySelection) * cellSize + gridY, cellSize - 1, cellSize - 1)
+        end
+    end
 end
 
 function grid.random()

@@ -37,6 +37,8 @@ function game.keypressed(key)
         grid.random()
     elseif key == 'f' then
         grid.fill()
+    elseif key == 'p' then
+        isPasting = true
     end
 end
 
