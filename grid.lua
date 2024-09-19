@@ -159,6 +159,7 @@ function grid.mousepressed(x, y, button)
         end
     elseif button == 2 and isPasting then
         isPasting = false
+        numberOfRotation = 0
     end
 end
 
@@ -174,24 +175,49 @@ function grid.mousereleased(x, y, button)
 end
 
 function grid.saveSelectecSave()
-    -- get the selection but the coords are relative to the mouse position
-    local xStart = math.floor((startXRectangle - gridX) / cellSize)
-    local yStart = math.floor((startYRectangle - gridY) / cellSize)
-    local xEnd = math.floor((endXRectangle - gridX) / cellSize)
-    local yEnd = math.floor((endYRectangle - gridY) / cellSize)
+    -- get the selection but the coords are relative to the mouse position and the center of the selection
+    local x = math.floor((startXRectangle - gridX) / cellSize)
+    local y = math.floor((startYRectangle - gridY) / cellSize)
+    local endX = math.floor((endXRectangle - gridX) / cellSize)
+    local endY = math.floor((endYRectangle - gridY) / cellSize)
+
+    -- get the middle of the selection
+    local middleX = math.floor((endX + x) / 2)
+    local middleY = math.floor((endY + y) / 2)
 
     -- get the selection
     selection = {}
-    for x = xStart, xEnd do
-        for y = yStart, yEnd do
-            if GRID[x] and GRID[x][y] then
-                if not selection[x - xStart] then
-                    selection[x - xStart] = {}
+    for i = x, endX do
+        for j = y, endY do
+            if GRID[i] and GRID[i][j] then
+                if not selection[i - middleX] then
+                    selection[i - middleX] = {}
                 end
-                selection[x - xStart][y - yStart] = true
+                selection[i - middleX][j - middleY] = true
+            else
+                if not selection[i - middleX] then
+                    selection[i - middleX] = {}
+                end
+                selection[i - middleX][j - middleY] = false
             end
         end
     end
+end
+
+function grid.rotateSelect()
+    -- rotate the selection
+    -- shitty code but it works
+    local newSelection = {}
+    for x, elem in next, selection do
+        for y, cell in next, elem do
+            if not newSelection[y] then
+                newSelection[y] = {}
+            end
+            newSelection[y][-x] = cell
+        end
+    end
+
+    selection = newSelection
 end
 
 function grid.mousemoved(x, y, dx, dy)
@@ -330,8 +356,10 @@ function grid.drawPaste()
     -- print the selection on the grid where the mouse is
     for xSelection, elem in next, selection do
         for ySelection, cell in next, elem do
-            love.graphics.setColor(0, 0, 0)
-            love.graphics.rectangle('fill', (x + xSelection) * cellSize + gridX, (y + ySelection) * cellSize + gridY, cellSize - 1, cellSize - 1)
+            if cell then
+                love.graphics.setColor(0, 0, 0)
+                love.graphics.rectangle('fill', (x + xSelection) * cellSize + gridX, (y + ySelection) * cellSize + gridY, cellSize - 1, cellSize - 1)
+            end
         end
     end
 end

@@ -38,7 +38,9 @@ function game.keypressed(key)
     elseif key == 'f' then
         grid.fill()
     elseif key == 'p' then
-        isPasting = true
+        isPasting = not isPasting
+    elseif key == 'w' then
+        grid.rotateSelect()
     end
 end
 
