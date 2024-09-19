@@ -19,6 +19,7 @@ local helpingList = {
     'Clic droit: Effacer la cellule',
     'Clic droit+shift: Copier la selection',
     'p: Coller la selection',
+    'w: Tourner la selection',
 }
 local time = 0
 
