@@ -226,6 +226,22 @@ function grid.rotateSelect()
     selection = newSelection
 end
 
+function grid.flipSelection()
+    -- flip the selection
+    -- shitty code but it works
+    local newSelection = {}
+    for x, elem in next, selection do
+        for y, cell in next, elem do
+            if not newSelection[-x] then
+                newSelection[-x] = {}
+            end
+            newSelection[-x][y] = cell
+        end
+    end
+
+    selection = newSelection
+end
+
 function grid.mousemoved(x, y, dx, dy)
     if translate then
         gridX = gridX + dx

@@ -20,6 +20,7 @@ local helpingList = {
     'Clic droit+shift: Copier la selection',
     'p: Coller la selection',
     'w: Tourner la selection',
+    'x: Retourner la selection',
 }
 local time = 0
 

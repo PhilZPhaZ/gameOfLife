@@ -41,6 +41,8 @@ function game.keypressed(key)
         isPasting = not isPasting
     elseif key == 'w' then
         grid.rotateSelect()
+    elseif key == 'x' then
+        grid.flipSelection()
     end
 end
 
