@@ -22,6 +22,12 @@ local startXRectangle, startYRectangle = 0, 0
 local endXRectangle, endYRectangle = 0, 0
 local selection = {}
 
+-- other variables
+local x_fill, y_fill
+local x_random, y_random
+local x_load, y_load
+local x_save, y_save
+
 function grid.init()
 
 end
@@ -146,8 +152,8 @@ function grid.mousepressed(x, y, button)
     elseif button == 1 and isPasting then
         -- paste the selection in the grid
         local xMouse, yMouse = love.mouse.getPosition()
-        local x = math.floor((xMouse - gridX) / cellSize)
-        local y = math.floor((yMouse - gridY) / cellSize)
+        x = math.floor((xMouse - gridX) / cellSize)
+        y = math.floor((yMouse - gridY) / cellSize)
 
         for xSelection, elem in next, selection do
             for ySelection, cell in next, elem do
@@ -176,8 +182,8 @@ end
 
 function grid.saveSelectecSave()
     -- get the selection but the coords are relative to the mouse position and the center of the selection
-    local x = math.floor((startXRectangle - gridX) / cellSize)
-    local y = math.floor((startYRectangle - gridY) / cellSize)
+    x = math.floor((startXRectangle - gridX) / cellSize)
+    y = math.floor((startYRectangle - gridY) / cellSize)
     local endX = math.floor((endXRectangle - gridX) / cellSize)
     local endY = math.floor((endYRectangle - gridY) / cellSize)
 
@@ -350,8 +356,8 @@ function grid.drawPaste()
 
     -- draw the selection depending on the mouse position
     local xMouse, yMouse = love.mouse.getPosition()
-    local x = math.floor((xMouse - gridX) / cellSize)
-    local y = math.floor((yMouse - gridY) / cellSize)
+    x = math.floor((xMouse - gridX) / cellSize)
+    y = math.floor((yMouse - gridY) / cellSize)
 
     -- print the selection on the grid where the mouse is
     for xSelection, elem in next, selection do
@@ -366,15 +372,15 @@ end
 
 function grid.random()
     -- for all the visible cell
-    for x = math.floor(-gridX / cellSize), math.ceil((love.graphics.getWidth() - gridX) / cellSize) do
-        for y = math.floor(-gridY / cellSize), math.ceil((love.graphics.getHeight() - gridY) / cellSize) do
-            if not GRID[x] then
-                GRID[x] = {}
+    for x_random = math.floor(-gridX / cellSize), math.ceil((love.graphics.getWidth() - gridX) / cellSize) do
+        for y_random = math.floor(-gridY / cellSize), math.ceil((love.graphics.getHeight() - gridY) / cellSize) do
+            if not GRID[x_random] then
+                GRID[x_random] = {}
             end
             if math.random(0, 1) == 1 then
-                GRID[x][y] = true
+                GRID[x_random][y_random] = true
             else
-                GRID[x][y] = nil
+                GRID[x_random][y_random] = nil
             end
         end
     end
@@ -390,9 +396,9 @@ function grid.saveToFile(saveName)
     grid.removeFalseCell()
 
     local saveData = {}
-    for x, elem in next, GRID do
-        for y, cell in next, elem do
-            table.insert(saveData, x .. ';' .. y .. ';' .. tostring(cell))
+    for x_save, elem in next, GRID do
+        for y_save, cell in next, elem do
+            table.insert(saveData, x_save .. ';' .. y_save .. ';' .. tostring(cell))
         end
     end
 
@@ -404,23 +410,23 @@ function grid.loadFromFile(saveName)
     local saveData = love.filesystem.read('saves/' .. saveName)
 
     for line in saveData:gmatch('[^\n]+') do
-        local x, y, cell = line:match('(%d+);(%d+);(%a+)')
-        if not GRID[tonumber(x)] then
-            GRID[tonumber(x)] = {}
+        local x_load, y_load, cell = line:match('(%d+);(%d+);(%a+)')
+        if not GRID[tonumber(x_load)] then
+            GRID[tonumber(x_load)] = {}
         end
-        GRID[tonumber(x)][tonumber(y)] = cell == 'true'
+        GRID[tonumber(x_load)][tonumber(y_load)] = cell == 'true'
     end
 
     grid.removeFalseCell()
 end
 
 function grid.fill()
-    for x = math.floor(-gridX / cellSize), math.ceil((love.graphics.getWidth() - gridX) / cellSize) do
-        for y = math.floor(-gridY / cellSize), math.ceil((love.graphics.getHeight() - gridY) / cellSize) do
-            if not GRID[x] then
-                GRID[x] = {}
+    for x_fill = math.floor(-gridX / cellSize), math.ceil((love.graphics.getWidth() - gridX) / cellSize) do
+        for y_fill = math.floor(-gridY / cellSize), math.ceil((love.graphics.getHeight() - gridY) / cellSize) do
+            if not GRID[x_fill] then
+                GRID[x_fill] = {}
             end
-            GRID[x][y] = true
+            GRID[x_fill][y_fill] = true
         end
     end
 end
