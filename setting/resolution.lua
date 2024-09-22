@@ -40,19 +40,19 @@ function resolution.keypressed(key)
         end
     elseif key == 'return' then
         if selectedResolutionMenu == 1 then
-            love.window.setMode(1080, 720)
+            love.window.setMode(1080, 720, {resizable = true})
         elseif selectedResolutionMenu == 2 then
-            love.window.setMode(1280, 720)
+            love.window.setMode(1280, 720, {resizable = true})
         elseif selectedResolutionMenu == 3 then
-            love.window.setMode(1366, 768)
+            love.window.setMode(1366, 768, {resizable = true})
         elseif selectedResolutionMenu == 4 then
-            love.window.setMode(1600, 900)
+            love.window.setMode(1600, 900, {resizable = true})
         elseif selectedResolutionMenu == 5 then
-            love.window.setMode(1920, 1080)
+            love.window.setMode(1920, 1080, {resizable = true})
         elseif selectedResolutionMenu == 6 then
-            love.window.setMode(2560, 1440)
+            love.window.setMode(2560, 1440, {resizable = true})
         elseif selectedResolutionMenu == 7 then
-            love.window.setMode(3840, 2160)
+            love.window.setMode(3840, 2160, {resizable = true})
         elseif selectedResolutionMenu == 8 then
             gameState = 'setting'
         end

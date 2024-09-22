@@ -49,7 +49,7 @@ function musicSetting.keypressed(key)
                 end
             end
 
-            musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
+            musicSettingMenu[3] = 'Volume : ' .. (soundVolume * 100) .. '%'
             source[musicIndex]:setVolume(soundVolume)
         elseif selectedMenuMusic == 3 then
             gameState = 'setting'
@@ -59,14 +59,14 @@ function musicSetting.keypressed(key)
         if soundVolume > 1 then
             soundVolume = 1
         end
-        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
+        musicSettingMenu[3] = 'Volume : ' .. (soundVolume * 100) .. '%'
         source[musicIndex]:setVolume(soundVolume)
     elseif key == 'left' and selectedMenuMusic == 3 then
         soundVolume = soundVolume - soundVolumeChanging
         if soundVolume < soundVolumeChanging then
             soundVolume = 0
         end
-        musicSettingMenu[2] = 'Volume : ' .. (soundVolume * 100) .. '%'
+        musicSettingMenu[3] = 'Volume : ' .. (soundVolume * 100) .. '%'
         source[musicIndex]:setVolume(soundVolume)
     end
 end
